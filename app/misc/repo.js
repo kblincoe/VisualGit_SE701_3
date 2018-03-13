@@ -16,7 +16,10 @@ function downloadRepository() {
     downloadFunc(cloneURL, localPath);
 }
 function downloadFunc(cloneURL, localPath) {
-    var fullLocalPath = require("path").join(__dirname, localPath);
+    var splitCloneURL = cloneURL.split("/");
+    var repoName = splitCloneURL[splitCloneURL.length - 1];
+    console.log("repoName = " + repoName);
+    var fullLocalPath = require("path").join(__dirname, repoName);
     var options = {};
     displayModal("Cloning Repository...");
     options = {
@@ -29,18 +32,18 @@ function downloadFunc(cloneURL, localPath) {
             }
         }
     };
-    console.log("cloning into " + fullLocalPath);
+    console.log("cloning into " + cloneURL);
     var repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
         .then(function (repository) {
         console.log("Repo successfully cloned");
         updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
-        addCommand("git clone " + cloneURL + " " + localPath);
+        addCommand("git clone " + cloneURL);
         repoFullPath = fullLocalPath;
         repoLocalPath = localPath;
         refreshAll(repository);
     }, function (err) {
         updateModalText("Clone Failed - " + err);
-        console.log(err);
+        console.log(err); // TODO show error on screen
     });
 }
 function openRepository() {
@@ -60,7 +63,7 @@ function openRepository() {
         updateModalText("Repository successfully opened");
     }, function (err) {
         updateModalText("Opening Failed - " + err);
-        console.log(err);
+        console.log(err); // TODO show error on screen
     });
 }
 function addBranchestoNode(thisB) {
@@ -88,7 +91,7 @@ function refreshAll(repository) {
         console.log(branchParts + "OOOOOOOOOOO");
         branch = branchParts[branchParts.length - 1];
     }, function (err) {
-        console.log(err + "?????");
+        console.log(err + "?????"); // TODO show error on screen
     })
         .then(function () {
         return repository.getReferences(Git.Reference.TYPE.LISTALL);
@@ -97,8 +100,11 @@ function refreshAll(repository) {
         var count = 0;
         clearBranchElement();
         var _loop_1 = function (i) {
+            //console.log(branchList[i].name() + "!!!!");
             var bp = branchList[i].name().split("/");
             Git.Reference.nameToId(repository, branchList[i].name()).then(function (oid) {
+                // Use oid
+                //console.log(oid + "  TTTTTTTT");
                 if (branchList[i].isRemote()) {
                     remoteName[bp[bp.length - 1]] = oid;
                 }
@@ -152,6 +158,7 @@ function getAllBranches() {
                 displayBranch(bp[bp.length - 1], "branch-dropdown", "checkoutLocalBranch(this)");
             }
             Git.Reference.nameToId(repos, branchList[i]).then(function (oid) {
+                // Use oid
                 console.log(oid + "  TTTTTTTT");
             });
         }
@@ -268,7 +275,29 @@ function updateLocalPath() {
         document.getElementById("repoSave").value = splitText[splitText.length - 2];
     }
 }
+// function initModal() {
+//   modal = document.getElementById("modal");
+//   btn = document.getElementById("new-repo-button");
+//   confirmBtn = document.getElementById("confirm-button");
+//   span = document.getElementsByClassName("close")[0];
+// }
+// function handleModal() {
+//   // When the user clicks on <span> (x), close the modal
+//   span.onclick = function() {
+//     modal.style.display = "none";
+//   };
+//
+//   // When the user clicks anywhere outside of the modal, close it
+//   window.onclick = function(event) {
+//
+//     if (event.target === modal) {
+//       modal.style.display = "none";
+//     }
+//   };
+// }
 function displayModal(text) {
+    //  initModal();
+    //  handleModal();
     document.getElementById("modal-text-box").innerHTML = text;
     $('#modal').modal('show');
 }
