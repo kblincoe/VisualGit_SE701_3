@@ -30,6 +30,9 @@ function getUserInfo(callback) {
         }
         else {
             avaterImg = Object.values(data)[2];
+
+            var docGitUser = document.getElementById("githubname");
+            docGitUser.innerHTML = Object.values(data)[0];
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
             callback();
