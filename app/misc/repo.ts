@@ -18,7 +18,11 @@ function downloadRepository() {
 }
 
 function downloadFunc(cloneURL, localPath) {
-  let fullLocalPath = require("path").join(__dirname, localPath);
+  let splitCloneURL = cloneURL.split("/");
+  let repoName = splitCloneURL[splitCloneURL.length-1];
+  console.log("repoName = " + repoName);
+
+  let fullLocalPath = require("path").join(__dirname, repoName);
   let options = {};
 
   displayModal("Cloning Repository...");
@@ -34,12 +38,12 @@ function downloadFunc(cloneURL, localPath) {
     }
   };
 
-  console.log("cloning into " + fullLocalPath);
+  console.log("cloning into " + cloneURL);
   let repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
   .then(function(repository) {
     console.log("Repo successfully cloned");
     updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
-    addCommand("git clone " + cloneURL + " " + localPath);
+    addCommand("git clone " + cloneURL);
     repoFullPath = fullLocalPath;
     repoLocalPath = localPath;
     refreshAll(repository);
