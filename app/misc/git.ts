@@ -568,7 +568,10 @@ function displayModifiedFiles() {
 
         document.getElementById("files-changed").appendChild(fileElement);
 
-        fileElement.onclick = function() {
+        fileElement.onclick = function(e) {
+          if (e.target !== this) {
+            return;
+          }
           let doc = document.getElementById("diff-panel");
           console.log(doc.style.width + 'oooooo');
           if (doc.style.width === '0px' || doc.style.width === '') {
