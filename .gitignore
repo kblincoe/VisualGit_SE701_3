@@ -5,3 +5,5 @@ dist/
 stylesheets/variables.css
 npm-debug.log
 git-history*
+.idea/
+package-lock.json

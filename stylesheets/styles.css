@@ -84,6 +84,14 @@ body .header {
   /* Modal Content/Box */
 }
 
+/*
+ Modal Text Box
+ */
+.modal-content {
+  /* Make file-path text wrap, rather than disappear */
+  word-wrap: break-word;
+}
+
 body .navbar {
   margin-bottom: 0px;
   font-size: 20px;
