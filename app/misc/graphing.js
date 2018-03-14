@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var vis = require("vis");
 var github1 = require("octonode");
 var nodeId = 1;

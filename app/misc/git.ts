@@ -578,7 +578,7 @@ function displayModifiedFiles() {
             if (fileElement.className === "file file-created") {
               printNewFile(file.filePath);
             } else {
-              printFileDiff(file.filePath);
+              printFileDiff(file.filePath)；
             }
           } else {
             hideDiffPanel();
