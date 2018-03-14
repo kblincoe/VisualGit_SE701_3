@@ -30,7 +30,6 @@ function getUserInfo(callback) {
         }
         else {
             avaterImg = Object.values(data)[2];
-
             var docGitUser = document.getElementById("githubname");
             docGitUser.innerHTML = Object.values(data)[0];
             var doc = document.getElementById("avatar");
@@ -46,9 +45,8 @@ function getUserInfo(callback) {
             console.log(data.length);
             for (var i = 0; i < data.length; i++) {
                 var rep = Object.values(data)[i];
-                console.log(rep['html_url']);
-                displayBranch(rep['name'], "repo-dropdown", "selectRepo(this)");
-                repoList[rep['name']] = rep['html_url'];
+                displayBranch(rep['full_name'], "repo-dropdown", "selectRepo(this)");
+                repoList[rep['full_name']] = rep['html_url'];
             }
         }
     });
