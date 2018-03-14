@@ -12,7 +12,7 @@ var modal;
 var span;
 function downloadRepository() {
     var cloneURL = document.getElementById("repoClone").value;
-    var localPath = document.getElementById("repoSave").value;
+    var localPath = document.getElementById("dirPickerSaveNew").files[0].path;
     downloadFunc(cloneURL, localPath);
 }
 function downloadFunc(cloneURL, localPath) {
@@ -44,8 +44,10 @@ function downloadFunc(cloneURL, localPath) {
     });
 }
 function openRepository() {
-    var localPath = document.getElementById("repoOpen").value;
-    var fullLocalPath = require("path").join(__dirname, localPath);
+    var localPath = document.getElementById("dirPickerOpenLocal").files[0].webkitRelativePath;
+    var fullLocalPath = document.getElementById("dirPickerOpenLocal").files[0].path;
+    document.getElementById("repoOpen").value = fullLocalPath;
+    document.getElementById("repoOpen").text = fullLocalPath;
     console.log("Trying to open repository at " + fullLocalPath);
     displayModal("Opening Local Repository...");
     Git.Repository.open(fullLocalPath).then(function (repository) {
