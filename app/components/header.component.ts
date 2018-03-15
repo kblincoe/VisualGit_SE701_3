@@ -36,13 +36,13 @@ import { GraphService } from "../services/graph.service";
                     </span>
                   </div>
                 </li>
-              </ul>
+              </ul> 
             </li>
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-			<li class="upload"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></li>
-            <li class="download"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"></i></li>
+			<li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
+            <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
