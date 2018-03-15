@@ -10,6 +10,7 @@ let readFile = require("fs-sync");
 let repoCurrentBranch = "master";
 let modal;
 let span;
+let repoName;
 
 function downloadRepository() {
   let cloneURL = document.getElementById("repoClone").value;
@@ -18,7 +19,11 @@ function downloadRepository() {
 }
 
 function downloadFunc(cloneURL, localPath) {
-  let fullLocalPath = require("path").join(__dirname, localPath);
+  let splitCloneURL = cloneURL.split("/");
+  repoName = splitCloneURL[splitCloneURL.length-1];
+  console.log("repoName = " + repoName);
+
+  let fullLocalPath = require("path").join(__dirname, repoName);
   let options = {};
 
   displayModal("Cloning Repository...");
@@ -34,12 +39,12 @@ function downloadFunc(cloneURL, localPath) {
     }
   };
 
-  console.log("cloning into " + fullLocalPath);
+  console.log("cloning into " + cloneURL);
   let repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
   .then(function(repository) {
     console.log("Repo successfully cloned");
     updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
-    addCommand("git clone " + cloneURL + " " + localPath);
+    addCommand("git clone " + cloneURL);
     repoFullPath = fullLocalPath;
     repoLocalPath = localPath;
     refreshAll(repository);
@@ -142,7 +147,8 @@ function refreshAll(repository) {
   .then(function() {
     console.log("Updating the graph and the labels");
     drawGraph();
-    document.getElementById("repo-name").innerHTML = repoLocalPath;
+    console.log("Updating repo-name label to: " + repoName);
+    document.getElementById("repo-name").innerHTML = repoName;
     document.getElementById("branch-name").innerHTML = branch + '<span class="caret"></span>';
   });
 }
