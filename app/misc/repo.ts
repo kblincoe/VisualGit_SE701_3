@@ -10,6 +10,7 @@ let readFile = require("fs-sync");
 let repoCurrentBranch = "master";
 let modal;
 let span;
+let repoName;
 
 function downloadRepository() {
   let cloneURL = document.getElementById("repoClone").value;
@@ -19,7 +20,7 @@ function downloadRepository() {
 
 function downloadFunc(cloneURL, localPath) {
   let splitCloneURL = cloneURL.split("/");
-  let repoName = splitCloneURL[splitCloneURL.length-1];
+  repoName = splitCloneURL[splitCloneURL.length-1];
   console.log("repoName = " + repoName);
 
   let fullLocalPath = require("path").join(__dirname, repoName);
@@ -146,7 +147,8 @@ function refreshAll(repository) {
   .then(function() {
     console.log("Updating the graph and the labels");
     drawGraph();
-    document.getElementById("repo-name").innerHTML = repoLocalPath;
+    console.log("Updating repo-name label to: " + repoName);
+    document.getElementById("repo-name").innerHTML = repoName;
     document.getElementById("branch-name").innerHTML = branch + '<span class="caret"></span>';
   });
 }
