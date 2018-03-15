@@ -14,7 +14,7 @@ import { GraphService } from "../services/graph.service";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository">
+          <a href="#"><img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository"></a>
         </div>
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="nav navbar-nav col-md-5 hidden-xs">
@@ -41,8 +41,8 @@ import { GraphService } from "../services/graph.service";
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-            <li class="upload"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></li>
-            <li class="download"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"></i></li>
+            <li class="upload"><a href="#"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></a><</li>
+            <li class="download"><a href="#"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"></i></a></li>
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
