@@ -13,7 +13,7 @@ var DiffPanelComponent = (function () {
     DiffPanelComponent = __decorate([
         core_1.Component({
             selector: "diff-panel",
-            template: "\n  <div class=\"diff-panel\" id=\"diff-panel\">\n    <div class=\"diff-panel-body\" id=\"diff-panel-body\"></div>\n      <div class=\"diff-panel-buttons\" id=\"diff-panel-buttons\">\n      <button class=\"save-button\" id=\"save-button\" disabled>Save</button>\n      <button class=\"cancel-button\" id=\"cancel-button\" disabled>Cancel</button>\n    </div>\n  </div>\n  "
+            template: "\n  <div class=\"diff-panel\" id=\"diff-panel\">\n    <div class=\"diff-panel-body\" id=\"diff-panel-body\"></div>\n\n    <div class=\"diff-panel-buttons\" id=\"diff-panel-buttons\">\n      <button class=\"save-button\" id=\"save-button\" disabled>Save</button>\n      <button class=\"cancel-button\" id=\"cancel-button\" disabled>Cancel</button>\n    </div>\n  </div>\n  \n  "
         })
     ], DiffPanelComponent);
     return DiffPanelComponent;
