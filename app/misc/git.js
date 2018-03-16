@@ -31,8 +31,13 @@ function addAndCommit() {
                 filesToAdd.push(fileElementChildren[0].innerHTML);
             }
         }
-        console.log("2.1");
-        return index.addAll(filesToStage);
+        if (filesToStage.length > 0) {
+            console.log("2.1");
+            return index.addAll(filesToStage);
+        }
+        else {
+            throw new Error("No files selected to commit.");
+        }
     })
         .then(function () {
         console.log("3.0");
@@ -86,7 +91,12 @@ function addAndCommit() {
         refreshAll(repository);
     }, function (err) {
         console.log(err);
-        updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+        if (err.message == "No files selected to commit.") {
+            displayModal(err.message);
+        }
+        else {
+            updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+        }
     });
 }
 function clearModifiedFilesList() {
