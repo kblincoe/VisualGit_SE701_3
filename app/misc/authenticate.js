@@ -1,3 +1,8 @@
+"use strict";
+/// <reference path="git.ts" />
+//exports.__esModule = true;
+var Git = require("nodegit");
+var repo;
 var github = require("octonode");
 var username;
 var password;
@@ -6,7 +11,37 @@ var client;
 var avaterImg;
 var repoList = {};
 var url;
+var signed = 0;
+var changes = 0;
+// sometimes still logs out user?
+//Called then user wushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
+function CommitNoPush() {
+    if (CommitButNoPush == 1) {
+        $("#modalW2").modal();
+    }
+}
 function signInHead(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    console.log(username + '      ' + password);
+    if (signed == 1) {
+        if ((changes == 1) || (CommitButNoPush == 1)) {
+            $("#modalW2").modal();
+        }
+        else {
+            getUserInfo(callback);
+        }
+    }
+    else {
+        getUserInfo(callback);
+    }
+}
+function LogInAfterConfirm(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    getUserInfo(callback);
+}
+function ModalSignIn(callback) {
     username = document.getElementById("Email1").value;
     password = document.getElementById("Password1").value;
     console.log(username + '      ' + password);
@@ -30,8 +65,19 @@ function getUserInfo(callback) {
         }
         else {
             avaterImg = Object.values(data)[2];
+            // let doc = document.getElementById("avater");
+            // doc.innerHTML = "";
+            // var elem = document.createElement("img");
+            // elem.width = 40;
+            // elem.height = 40;
+            // elem.src = avaterImg;
+            // doc.appendChild(elem);
+            // doc = document.getElementById("log");
+            // doc.innerHTML = 'sign out';
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
+            signed = 1;
+            //updateModalText("If you try to sign out with unsaved commits they will be lost!");
             callback();
         }
     });
@@ -49,6 +95,22 @@ function getUserInfo(callback) {
             }
         }
     });
+    // let scopes = {
+    //   'add_scopes': ['user', 'repo', 'gist'],
+    //   'note': 'admin script'
+    // };
+    //
+    // github.auth.config({
+    //   username: username,
+    //   password: password
+    // }).login(scopes, function (err, id, token) {
+    //   if (err !== null) {
+    //     console.log("login fail -- " + err);
+    //   }
+    //   aid = id;
+    //   atoken = token;
+    //   console.log(id, token);
+    // });
 }
 function selectRepo(ele) {
     url = repoList[ele.innerHTML];

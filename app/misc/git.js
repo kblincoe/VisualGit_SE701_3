@@ -1,4 +1,5 @@
 "use strict";
+//exports.__esModule = true;
 var opn = require('opn');
 var $ = require("jquery");
 var Git = require("nodegit");
@@ -10,6 +11,8 @@ var repo, index, oid, remote, commitMessage;
 var filesToAdd = [];
 var theirCommit = null;
 var modifiedFiles;
+var warnbool;
+var CommitButNoPush = 0;
 function addAndCommit() {
     var repository;
     Git.Repository.open(repoFullPath)
@@ -58,9 +61,10 @@ function addAndCommit() {
             sign = Git.Signature.now(username, password);
         }
         else {
-            sign = Git.Signature.default(repository);
+            sign = Git.Signature["default"](repository);
         }
         commitMessage = document.getElementById('commit-message-input').value;
+        //console.log(sign.toString());
         if (readFile.exists(repoFullPath + "/.git/MERGE_HEAD")) {
             var tid = readFile.read(repoFullPath + "/.git/MERGE_HEAD", null);
             console.log("theirComit: " + tid);
@@ -74,6 +78,9 @@ function addAndCommit() {
     })
         .then(function (oid) {
         theirCommit = null;
+        //console.log("8.0");
+        changes = 0;
+        CommitButNoPush = 1;
         console.log("Commit successful: " + oid.tostrS());
         hideDiffPanel();
         clearModifiedFilesList();
@@ -89,6 +96,7 @@ function addAndCommit() {
         updateModalText("Oops, error occours! If u haven't login, please login and try again.");
     });
 }
+// Clear all modified files from the left file panel
 function clearModifiedFilesList() {
     var filePanel = document.getElementById("files-changed");
     while (filePanel.firstChild) {
@@ -107,6 +115,19 @@ function clearSelectAllCheckbox() {
     document.getElementById('select-all-checkbox').checked = false;
 }
 function getAllCommits(callback) {
+    // Git.Repository.open(repoFullPath)
+    // .then(function(repo) {
+    //   return repo.getHeadCommit();
+    // })
+    // .then(function(firstCommitOnMaster){
+    //   let history = firstCommitOnMaster.history(Git.Revwalk.SORT.Time);
+    //
+    //   history.on("end", function(commits) {
+    //     callback(commits);
+    //   });
+    //
+    //   history.start();
+    // });
     var repos;
     var allCommits = [];
     var aclist = [];
@@ -153,6 +174,14 @@ function getAllCommits(callback) {
         });
     });
 }
+function PullBuffer() {
+    if ((changes == 1) || (CommitButNoPush == 1)) {
+        $("#modalW3").modal();
+    }
+    else {
+        pullFromRemote();
+    }
+}
 function pullFromRemote() {
     var repository;
     var branch = document.getElementById("branch-name").innerText;
@@ -188,7 +217,7 @@ function pullFromRemote() {
         .then(function (annotated) {
         console.log("4.0  " + annotated);
         Git.Merge.merge(repository, annotated, null, {
-            checkoutStrategy: Git.Checkout.STRATEGY.FORCE,
+            checkoutStrategy: Git.Checkout.STRATEGY.FORCE
         });
         theirCommit = annotated;
     })
@@ -202,6 +231,9 @@ function pullFromRemote() {
             refreshAll(repository);
         }
     });
+    //   .then(function(updatedRepository) {
+    //     refreshAll(updatedRepository);
+    // });
 }
 function pushToRemote() {
     var branch = document.getElementById("branch-name").innerText;
@@ -223,6 +255,8 @@ function pushToRemote() {
                 });
             })
                 .then(function () {
+                CommitButNoPush = 0;
+                window.onbeforeunload = Confirmed;
                 console.log("Push successful");
                 updateModalText("Push successful");
                 refreshAll(repo);
@@ -236,6 +270,7 @@ function createBranch() {
     console.log(branchName + "!!!!!!");
     Git.Repository.open(repoFullPath)
         .then(function (repo) {
+        // Create a new branch on head
         repos = repo;
         addCommand("git branch " + branchName);
         return repo.getHeadCommit()
@@ -290,6 +325,7 @@ function mergeCommits(from) {
     Git.Repository.open(repoFullPath)
         .then(function (repo) {
         repos = repo;
+        //return repos.getCommit(fromSha);
         addCommand("git merge " + from);
         return Git.Reference.nameToId(repos, 'refs/heads/' + from);
     })
@@ -300,7 +336,7 @@ function mergeCommits(from) {
         .then(function (annotated) {
         console.log("4.0  " + annotated);
         Git.Merge.merge(repos, annotated, null, {
-            checkoutStrategy: Git.Checkout.STRATEGY.FORCE,
+            checkoutStrategy: Git.Checkout.STRATEGY.FORCE
         });
         theirCommit = annotated;
     })
@@ -322,6 +358,7 @@ function rebaseCommits(from, to) {
     Git.Repository.open(repoFullPath)
         .then(function (repo) {
         repos = repo;
+        //return repos.getCommit(fromSha);
         addCommand("git rebase " + to);
         return Git.Reference.nameToId(repos, 'refs/heads/' + from);
     })
@@ -428,6 +465,17 @@ function revertCommit(name) {
         updateModalText(err);
     });
 }
+// Makes a modal for confirmation pop up instead of actually exiting application for confirmation.
+function ExitBeforePush() {
+    $("#modalW").modal();
+}
+function Confirmed() {
+}
+// makes the onbeforeunload function nothing so the window actually closes; then closes it.
+function Close() {
+    window.onbeforeunload = Confirmed;
+    window.close();
+}
 function displayModifiedFiles() {
     modifiedFiles = [];
     Git.Repository.open(repoFullPath)
@@ -442,7 +490,9 @@ function displayModifiedFiles() {
                 }
             }
             modifiedFiles.forEach(displayModifiedFile);
+            // Add modified file to array of modified files 'modifiedFiles'
             function addModifiedFile(file) {
+                // Check if modified file is already being displayed
                 var filePaths = document.getElementsByClassName('file-path');
                 for (var i = 0; i < filePaths.length; i++) {
                     if (filePaths[i].innerHTML === file.path()) {
@@ -456,6 +506,7 @@ function displayModifiedFiles() {
                     fileModification: modification
                 });
             }
+            // Find HOW the file has been modified
             function calculateModification(status) {
                 if (status.isNew()) {
                     return "NEW";
@@ -476,11 +527,19 @@ function displayModifiedFiles() {
                     return "IGNORED";
                 }
             }
+            function Confirmation() {
+                $("#modalW").modal();
+                return 'Hi';
+            }
+            // Add the modified file to the left file panel, and make it so that a warning pops up if user wishes to exit.
             function displayModifiedFile(file) {
                 var filePath = document.createElement("p");
                 filePath.className = "file-path";
                 filePath.innerHTML = file.filePath;
                 var fileElement = document.createElement("div");
+                window.onbeforeunload = Confirmation;
+                changes = 1;
+                // Set how the file has been modified
                 if (file.fileModification === "NEW") {
                     fileElement.className = "file file-created";
                 }
