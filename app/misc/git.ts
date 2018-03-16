@@ -12,6 +12,8 @@ let repo, index, oid, remote, commitMessage;
 let filesToAdd = [];
 let theirCommit = null;
 let modifiedFiles;
+let warnbool;
+var CommitButNoPush = 0;
 
 function addAndCommit() {
   let repository;
@@ -84,6 +86,8 @@ function addAndCommit() {
   .then(function(oid) {
     theirCommit = null;
     //console.log("8.0");
+	changes = 0;
+	CommitButNoPush = 1;
     console.log("Commit successful: " + oid.tostrS());
 
     hideDiffPanel();
@@ -188,6 +192,17 @@ function getAllCommits(callback) {
     });
 }
 
+function PullBuffer(){
+	if ((changes == 1) || (CommitButNoPush == 1)){
+		$("#modalW3").modal();
+	}
+	else {
+		pullFromRemote();
+	}
+	
+	
+}
+
 function pullFromRemote() {
   let repository;
   let branch = document.getElementById("branch-name").innerText;
@@ -245,6 +260,10 @@ function pullFromRemote() {
 // });
 }
 
+
+
+
+
 function pushToRemote() {
   let branch = document.getElementById("branch-name").innerText;
   Git.Repository.open(repoFullPath)
@@ -268,6 +287,8 @@ function pushToRemote() {
         );
       })
       .then(function() {
+		CommitButNoPush = 0;
+		window.onbeforeunload = Confirmed;
         console.log("Push successful");
         updateModalText("Push successful");
         refreshAll(repo);
@@ -490,9 +511,32 @@ function revertCommit(name: string) {
   });
 }
 
+// Makes a modal for confirmation pop up instead of actually exiting application for confirmation.
+function ExitBeforePush(){
+	$("#modalW").modal();
+}
+
+function Confirmed(){	
+	
+}
+
+// makes the onbeforeunload function nothing so the window actually closes; then closes it.
+function Close(){
+	window.onbeforeunload = Confirmed;
+	window.close();
+
+}
+
+
+
+function Reload(){
+	window.onbeforeunload = Confirmed;
+	location.reload();
+}
+
 function displayModifiedFiles() {
   modifiedFiles = [];
-
+  
   Git.Repository.open(repoFullPath)
   .then(function(repo) {
     console.log(repo.isMerging() + "ojoijnkbunmm");
@@ -525,12 +569,36 @@ function displayModifiedFiles() {
           });
       }
 
-      // Add the modified file to the left file panel
+
+      // Find HOW the file has been modified
+      function calculateModification(status) {
+        if (status.isNew()) {
+          return "NEW";
+        } else if (status.isModified()) {
+          return "MODIFIED";
+        } else if (status.isDeleted()) {
+          return "DELETED";
+        } else if (status.isTypechange()) {
+          return "TYPECHANGE";
+        } else if (status.isRenamed()) {
+          return "RENAMED";
+        } else if (status.isIgnored()) {
+          return "IGNORED";
+        }
+      }
+	  
+	  function Confirmation(){
+		$("#modalW").modal();
+		return 'Hi';
+	}
+	  
       function displayModifiedFile(file) {
         let filePath = document.createElement("p");
         filePath.className = "file-path";
         filePath.innerHTML = file.filePath;
         let fileElement = document.createElement("div");
+		window.onbeforeunload = Confirmation;
+		changes = 1;
         // Set how the file has been modified
         if (file.fileModification === "NEW") {
           fileElement.className = "file file-created";
