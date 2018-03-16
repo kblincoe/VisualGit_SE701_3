@@ -524,8 +524,14 @@ function Confirmed(){
 function Close(){
 	window.onbeforeunload = Confirmed;
 	window.close();
-}
+	
+	//location.reload();
+	}
 
+function Reload(){
+	window.onbeforeunload = Confirmed;
+	location.reload();
+}
 
 function displayModifiedFiles() {
   modifiedFiles = [];

@@ -134,10 +134,11 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been Committed or Pushed. If you exit now you will lose progress.
+            You have changes that have not been Committed or Pushed. If you exit or reload now you will lose progress.
           </div>
           <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >OK</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >Exit</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>	
           </div>
         </div>
