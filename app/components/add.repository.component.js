@@ -15,10 +15,24 @@ var AddRepositoryComponent = (function () {
         switchToMainPanel();
     };
     AddRepositoryComponent.prototype.selectSave = function () {
-        document.getElementById("dirPickerSaveNew").click();
+        if (document.getElementById("repoSave").value == null || document.getElementById("repoSave").value == "") {
+            document.getElementById("dirPickerSaveNew").click();
+        }
+        else {
+            this.addRepository();
+        }
     };
     AddRepositoryComponent.prototype.selectDirectory = function () {
-        document.getElementById("dirPickerOpenLocal").click();
+        if (document.getElementById("repoOpen").value == null || document.getElementById("repoOpen").value == "") {
+            document.getElementById("dirPickerOpenLocal").click();
+        }
+        else {
+            this.openRepository();
+        }
+    };
+    AddRepositoryComponent.prototype.openRepository = function () {
+        openRepository();
+        switchToMainPanel();
     };
     AddRepositoryComponent.prototype.returnToMainPanel = function () {
         switchToMainPanel();
@@ -26,7 +40,7 @@ var AddRepositoryComponent = (function () {
     AddRepositoryComponent = __decorate([
         core_1.Component({
             selector: "add-repository-panel",
-            template: "\n    <div class=\"add-repository-panel\" id=\"add-repository-panel\">\n      <input type=\"file\" id=\"dirPickerOpenLocal\" name=\"dirList\" onchange=\"openRepository(); switchToMainPanel();\" style=\"display: none;\" webkitdirectory />\n      <img src=\"./assets/Back.svg\" (click)=\"returnToMainPanel()\" class=\"back-button\">\n\n      <div class=\"add-repository-body\">\n        <div class=\"title\">\n          <h1 class=\"clone-title\">Clone from Internet</h1>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>URL to clone from</p>\n          </div>\n          <div class=\"right\">\n          <input type=\"text\" oninput=\"updateLocalPath()\" name=\"repositoryRemote\" size=\"50\" id=\"repoClone\" placeholder=\"https://github.com/user/repository.git\"/>\n          </div>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>File location to save to</p>\n          </div>\n          <div class=\"right\">\n            <input type=\"text\" name=\"repositoryLocal\" size=\"50\" id=\"repoSave\"/>\n            <button class=\"button-clone\" (click)=\"selectSave()\">Clone</button>\n            <input type=\"file\" id=\"dirPickerSaveNew\" name=\"dirListSave\" (change)=\"addRepository();\" style=\"display: none;\" webkitdirectory />\n          </div>\n        </div>\n\n\n        <div class=\"title\">\n          <h1 class=\"open-local-repo\">Open Local Repository</h1>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>Location of existing repository</p>\n          </div>\n          <div class=\"right\">\n            <input type=\"text\" name=\"repositoryLocal\" size=\"50\" id=\"repoOpen\"/>\n            <button class=\"button-open\" (click)=\"selectDirectory()\">Open</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  "
+            template: "\n    <div class=\"add-repository-panel\" id=\"add-repository-panel\">\n      <img src=\"./assets/Back.svg\" (click)=\"returnToMainPanel()\" class=\"back-button\">\n\n      <div class=\"add-repository-body\">\n        <div class=\"title\">\n          <h1 class=\"clone-title\">Clone from Internet</h1>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>URL to clone from</p>\n          </div>\n          <div class=\"right\">\n          <input type=\"text\" oninput=\"updateLocalPath()\" name=\"repositoryRemote\" size=\"50\" id=\"repoClone\" placeholder=\"https://github.com/user/repository.git\"/>\n          </div>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>File location to save to</p>\n          </div>\n          <div class=\"right\">\n            <input type=\"text\" name=\"repositoryLocal\" size=\"50\" id=\"repoSave\"/>\n            <button class=\"button-clone\" (click)=\"selectSave()\">Clone</button>\n            <input type=\"file\" id=\"dirPickerSaveNew\" name=\"dirListSave\" (change)=\"addRepository();\" style=\"display: none;\" webkitdirectory />\n          </div>\n        </div>\n\n\n        <div class=\"title\">\n          <h1 class=\"open-local-repo\">Open Local Repository</h1>\n        </div>\n\n        <div class=\"block\">\n          <div class=\"left\">\n            <p>Location of existing repository</p>\n          </div>\n          <div class=\"right\">\n            <input type=\"text\" name=\"repositoryLocal\" size=\"50\" id=\"repoOpen\"/>\n            <button class=\"button-open\" (click)=\"selectDirectory()\">Open</button>\n            <input type=\"file\" id=\"dirPickerOpenLocal\" name=\"dirList\" (change)=\"openRepository()\" style=\"display: none;\" webkitdirectory />\n          </div>\n        </div>\n      </div>\n    </div>\n  "
         })
     ], AddRepositoryComponent);
     return AddRepositoryComponent;

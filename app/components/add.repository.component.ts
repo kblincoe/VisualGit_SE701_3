@@ -61,12 +61,16 @@ export class AddRepositoryComponent {
   selectSave(): void {
     if (document.getElementById("repoSave").value == null || document.getElementById("repoSave").value == "") {
       document.getElementById("dirPickerSaveNew").click();
+    } else {
+      this.addRepository();
     }
   }
 
   selectDirectory(): void {
     if (document.getElementById("repoOpen").value == null || document.getElementById("repoOpen").value == "") {
       document.getElementById("dirPickerOpenLocal").click();
+    } else {
+      this.openRepository();
     }
   }
 
