@@ -13,6 +13,7 @@ let span;
 
 function downloadRepository() {
   let fullLocalPath;
+  // Full path is determined by either handwritten directory or selected by file browser
   if (document.getElementById("repoSave").value != null || document.getElementById("repoSave").value != "") {
     let localPath = document.getElementById("repoSave").value;
     fullLocalPath = require("path").join(__dirname, localPath);
@@ -23,6 +24,7 @@ function downloadRepository() {
   downloadFunc(cloneURL, fullLocalPath);
 }
 
+//Function takes full path to where repo should be saved
 function downloadFunc(cloneURL, fullLocalPath) {
   let options = {};
 
@@ -56,6 +58,7 @@ function downloadFunc(cloneURL, fullLocalPath) {
 }
 
 function openRepository() {
+  // Full path is determined by either handwritten directory or selected by file browser
   if (document.getElementById("repoOpen").value == null || document.getElementById("repoOpen").value == "") {
     let localPath = document.getElementById("dirPickerOpenLocal").files[0].webkitRelativePath;
     let fullLocalPath = document.getElementById("dirPickerOpenLocal").files[0].path;
