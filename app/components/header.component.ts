@@ -14,7 +14,7 @@ import { GraphService } from "../services/graph.service";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository">
+          <a href="#"><img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository"></a>
         </div>
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="nav navbar-nav col-md-5 hidden-xs">
@@ -24,7 +24,7 @@ import { GraphService } from "../services/graph.service";
             </li>
             <li><img src="./assets/RightArrow.svg" class="right-arrow"></li>
             <li class="branch-name dropdown">
-              <a class="dropdown-toggle" id="branch-name" data-toggle="dropdown">
+              <a href="#" class="dropdown-toggle" id="branch-name" data-toggle="dropdown">
                 branch<span class="caret"></span>
               </a>
               <ul class="dropdown-menu" id="branch-dropdown" role="menu" aria-labelledby="branch-name">
@@ -41,12 +41,14 @@ import { GraphService } from "../services/graph.service";
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-			<li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
-            <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
+			      <li class="upload"><a href="#"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
+            <li class="download"><a href="#"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
+
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
             <li>
+              <label id="githubname" style="color:white"></label>
               <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1">Sign in</a>
             </li>
           </ul>
