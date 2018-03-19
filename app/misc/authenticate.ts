@@ -1,11 +1,3 @@
-/// <reference path="git.ts" />
-
-import * as nodegit from "git";
-import NodeGit, { Status } from "nodegit";
-
-let Git = require("nodegit");
-let repo;
-
 let github = require("octonode");
 let username;
 let password;
@@ -14,46 +6,12 @@ let client;
 let avaterImg;
 let repoList = {};
 let url;
-var signed = 0;
-var changes = 0;
-
-//NOTE: for interaction with Issue #7, it must be made that variables are reset when user is sent back to the login page. (Such as signed,changes and CommitButNoPush)
-
-//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
-function CommitNoPush(){
-	if (CommitButNoPush == 1){
-		$("#modalW2").modal();
-	}
-}
 
 function signInHead(callback) {
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
-	console.log(username + '      ' + password);
-	if (signed == 1){
-		if ((changes == 1) || (CommitButNoPush == 1)){
-			$("#modalW2").modal();
-		}
-		else {
-			getUserInfo(callback);
-		}
-	}
-	else{
-	  getUserInfo(callback);
-	}
-}
-
-function LogInAfterConfirm(callback){
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
-	getUserInfo(callback);
-}
-
-function ModalSignIn(callback){
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
-	console.log(username + '      ' + password);
-	getUserInfo(callback);
+  username = document.getElementById("Email1").value;
+  password = document.getElementById("Password1").value;
+  console.log(username + '      ' + password);
+  getUserInfo(callback);
 }
 
 function signInPage(callback) {
@@ -63,7 +21,6 @@ function signInPage(callback) {
 }
 
 function getUserInfo(callback) {
-	
   cred = Git.Cred.userpassPlaintextNew(username, password);
 
   client = github.client({
@@ -87,8 +44,6 @@ function getUserInfo(callback) {
       // doc.innerHTML = 'sign out';
       let doc = document.getElementById("avatar");
       doc.innerHTML = 'Sign out';
-	  signed = 1;
-	  //updateModalText("If you try to sign out with unsaved commits they will be lost!");
       callback();
     }
   });

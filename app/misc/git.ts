@@ -12,11 +12,6 @@ let repo, index, oid, remote, commitMessage;
 let filesToAdd = [];
 let theirCommit = null;
 let modifiedFiles;
-<<<<<<< HEAD
-=======
-let warnbool;
->>>>>>> 4ae6df0... Warnings Draft Implementation
-var CommitButNoPush = 0;
 
 function addAndCommit() {
   let repository;
@@ -89,8 +84,6 @@ function addAndCommit() {
   .then(function(oid) {
     theirCommit = null;
     //console.log("8.0");
-	changes = 0;
-	CommitButNoPush = 1;
     console.log("Commit successful: " + oid.tostrS());
 
     hideDiffPanel();
@@ -195,17 +188,6 @@ function getAllCommits(callback) {
     });
 }
 
-function PullBuffer(){
-	if ((changes == 1) || (CommitButNoPush == 1)){
-		$("#modalW3").modal();
-	}
-	else {
-		pullFromRemote();
-	}
-	
-	
-}
-
 function pullFromRemote() {
   let repository;
   let branch = document.getElementById("branch-name").innerText;
@@ -263,10 +245,6 @@ function pullFromRemote() {
 // });
 }
 
-
-
-
-
 function pushToRemote() {
   let branch = document.getElementById("branch-name").innerText;
   Git.Repository.open(repoFullPath)
@@ -290,8 +268,6 @@ function pushToRemote() {
         );
       })
       .then(function() {
-		CommitButNoPush = 0;
-		window.onbeforeunload = Confirmed;
         console.log("Push successful");
         updateModalText("Push successful");
         refreshAll(repo);
@@ -514,39 +490,9 @@ function revertCommit(name: string) {
   });
 }
 
-// Makes a modal for confirmation pop up instead of actually exiting application for confirmation.
-function ExitBeforePush(){
-	$("#modalW").modal();
-}
-
-<<<<<<< HEAD
-function Confirmed(){		
-=======
-function Confirmed(){	
-	
->>>>>>> 4ae6df0... Warnings Draft Implementation
-}
-
-// makes the onbeforeunload function nothing so the window actually closes; then closes it.
-function Close(){
-	window.onbeforeunload = Confirmed;
-	window.close();
-<<<<<<< HEAD
-	}
-
-function Reload(){
-	window.onbeforeunload = Confirmed;
-	location.reload();
-}
-
-=======
-}
-
-
->>>>>>> 4ae6df0... Warnings Draft Implementation
 function displayModifiedFiles() {
   modifiedFiles = [];
-  
+
   Git.Repository.open(repoFullPath)
   .then(function(repo) {
     console.log(repo.isMerging() + "ojoijnkbunmm");
@@ -595,21 +541,13 @@ function displayModifiedFiles() {
           return "IGNORED";
         }
       }
-	  
-	  function Confirmation(){
-		$("#modalW").modal();
-		return 'Hi';
-	}
-	  
 
-      // Add the modified file to the left file panel, and make it so that a warning pops up if user wishes to exit.
+      // Add the modified file to the left file panel
       function displayModifiedFile(file) {
         let filePath = document.createElement("p");
         filePath.className = "file-path";
         filePath.innerHTML = file.filePath;
         let fileElement = document.createElement("div");
-		window.onbeforeunload = Confirmation;
-		changes = 1;
         // Set how the file has been modified
         if (file.fileModification === "NEW") {
           fileElement.className = "file file-created";
