@@ -74,8 +74,11 @@ function getUserInfo(callback) {
             // doc.appendChild(elem);
             // doc = document.getElementById("log");
             // doc.innerHTML = 'sign out';
+<<<<<<< HEAD
             var docGitUser = document.getElementById("githubname");
             docGitUser.innerHTML = Object.values(data)[0];
+=======
+>>>>>>> 4ae6df0... Warnings Draft Implementation
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
             signed = 1;

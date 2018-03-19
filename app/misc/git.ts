@@ -12,6 +12,10 @@ let repo, index, oid, remote, commitMessage;
 let filesToAdd = [];
 let theirCommit = null;
 let modifiedFiles;
+<<<<<<< HEAD
+=======
+let warnbool;
+>>>>>>> 4ae6df0... Warnings Draft Implementation
 var CommitButNoPush = 0;
 
 function addAndCommit() {
@@ -515,13 +519,19 @@ function ExitBeforePush(){
 	$("#modalW").modal();
 }
 
+<<<<<<< HEAD
 function Confirmed(){		
+=======
+function Confirmed(){	
+	
+>>>>>>> 4ae6df0... Warnings Draft Implementation
 }
 
 // makes the onbeforeunload function nothing so the window actually closes; then closes it.
 function Close(){
 	window.onbeforeunload = Confirmed;
 	window.close();
+<<<<<<< HEAD
 	}
 
 function Reload(){
@@ -529,6 +539,11 @@ function Reload(){
 	location.reload();
 }
 
+=======
+}
+
+
+>>>>>>> 4ae6df0... Warnings Draft Implementation
 function displayModifiedFiles() {
   modifiedFiles = [];
   

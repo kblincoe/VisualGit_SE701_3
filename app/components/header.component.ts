@@ -41,8 +41,9 @@ import { GraphService } from "../services/graph.service";
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-            <li class="upload"><a href="#"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></a><</li>
-            <li class="download"><a href="#"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="PullBuffer()" title="Pull"></i></a></li>
+            <li class="upload"><a href="#"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></a></li>
+            <li class="download"><a href="#"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"></i></a></li>
+            <a href="#"><img src="./assets/Clean-Dark.svg" height="48" width="48" onclick="cleanRepo()" class="add-repository-button" title="Clean"></a>
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
@@ -99,6 +100,7 @@ import { GraphService } from "../services/graph.service";
             </li>
             <li class="upload" onclick="pushToRemote()"><a href="#">&nbsp;&nbsp;pull</a></li>
             <li class="download"onclick="pullFromRemote()"><a href="#">&nbsp;&nbsp;push</a></li>
+            <li class="clean" onclick="cleanRepo()"><a href="#">&nbsp;&nbsp;clean</a></li>
           </ul>
         </div>
       </div>
@@ -135,7 +137,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been committed or pushed. If you exit or reload now you will lose progress.
+            You have changes that have not been Committed or Pushed. If you exit or reload now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
@@ -157,7 +159,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been committed or pushed. If you log out now you will lose progress.
+            You have changes that have not been Committed or Pushed. if you log out now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
@@ -177,7 +179,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been committed or pushed. If you pull now you will lose progress.
+            You have changes that have not been Committed or Pushed. if you Pull now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>

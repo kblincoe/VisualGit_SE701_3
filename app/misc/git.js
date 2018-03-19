@@ -11,6 +11,7 @@ var repo, index, oid, remote, commitMessage;
 var filesToAdd = [];
 var theirCommit = null;
 var modifiedFiles;
+var warnbool;
 var CommitButNoPush = 0;
 function addAndCommit() {
     var repository;
@@ -474,6 +475,7 @@ function Confirmed() {
 function Close() {
     window.onbeforeunload = Confirmed;
     window.close();
+    //location.reload();
 }
 function Reload() {
     window.onbeforeunload = Confirmed;
@@ -509,32 +511,7 @@ function displayModifiedFiles() {
                     fileModification: modification
                 });
             }
-            // Find HOW the file has been modified
-            function calculateModification(status) {
-                if (status.isNew()) {
-                    return "NEW";
-                }
-                else if (status.isModified()) {
-                    return "MODIFIED";
-                }
-                else if (status.isDeleted()) {
-                    return "DELETED";
-                }
-                else if (status.isTypechange()) {
-                    return "TYPECHANGE";
-                }
-                else if (status.isRenamed()) {
-                    return "RENAMED";
-                }
-                else if (status.isIgnored()) {
-                    return "IGNORED";
-                }
-            }
-            function Confirmation() {
-                $("#modalW").modal();
-                return 'Hi';
-            }
-            // Add the modified file to the left file panel, and make it so that a warning pops up if user wishes to exit.
+            // Add the modified file to the left file panel
             function displayModifiedFile(file) {
                 var filePath = document.createElement("p");
                 filePath.className = "file-path";
@@ -640,5 +617,78 @@ function displayModifiedFiles() {
         });
     }, function (err) {
         console.log("waiting for repo to be initialised");
+    });
+}
+// Find HOW the file has been modified
+function calculateModification(status) {
+    if (status.isNew()) {
+        return "NEW";
+    }
+    else if (status.isModified()) {
+        return "MODIFIED";
+    }
+    else if (status.isDeleted()) {
+        return "DELETED";
+    }
+    else if (status.isTypechange()) {
+        return "TYPECHANGE";
+    }
+    else if (status.isRenamed()) {
+        return "RENAMED";
+    }
+    else if (status.isIgnored()) {
+        return "IGNORED";
+    }
+}
+function deleteFile(filePath) {
+    var newFilePath = filePath.replace(/\\/gi, "/");
+    if (fs.existsSync(newFilePath)) {
+        fs.unlink(newFilePath, function (err) {
+            if (err) {
+                alert("An error occurred updating the file" + err.message);
+                console.log(err);
+                return;
+            }
+            console.log("File successfully deleted");
+        });
+    }
+    else {
+        alert("This file doesn't exist, cannot delete");
+    }
+}
+function cleanRepo() {
+    var fileCount = 0;
+    Git.Repository.open(repoFullPath)
+        .then(function (repo) {
+        console.log("Removing untracked files");
+        displayModal("Removing untracked files...");
+        addCommand("git clean -f");
+        repo.getStatus().then(function (arrayStatusFiles) {
+            arrayStatusFiles.forEach(deleteUntrackedFiles);
+            //Gets NEW/untracked files and deletes them
+            function deleteUntrackedFiles(file) {
+                var filePath = repoFullPath + "\\" + file.path();
+                var modification = calculateModification(file);
+                if (modification === "NEW") {
+                    console.log("DELETING FILE " + filePath);
+                    deleteFile(filePath);
+                    console.log("DELETION SUCCESSFUL");
+                    fileCount++;
+                }
+            }
+        })
+            .then(function () {
+            console.log("Cleanup successful");
+            if (fileCount !== 0) {
+                updateModalText("Cleanup successful. Removed " + fileCount + " files.");
+            }
+            else {
+                updateModalText("Nothing to remove.");
+            }
+            refreshAll(repo);
+        });
+    }, function (err) {
+        console.log("Waiting for repo to be initialised");
+        displayModal("Please select a valid repository");
     });
 }
