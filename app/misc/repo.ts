@@ -18,6 +18,7 @@ function downloadRepository() {
 }
 
 function downloadFunc(cloneURL, localPath) {
+  console.log("downloadFunc().localPath = " + localPath);
   let fullLocalPath = require("path").join(__dirname, localPath);
   let options = {};
 

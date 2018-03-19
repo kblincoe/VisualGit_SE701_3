@@ -74,15 +74,13 @@ function getUserInfo(callback) {
             // doc.appendChild(elem);
             // doc = document.getElementById("log");
             // doc.innerHTML = 'sign out';
-<<<<<<< HEAD
+
             var docGitUser = document.getElementById("githubname");
             docGitUser.innerHTML = Object.values(data)[0];
-=======
->>>>>>> 4ae6df0... Warnings Draft Implementation
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
             signed = 1;
-            //updateModalText("If you try to sign out with unsaved commits they will be lost!");
+          
             callback();
         }
     });
@@ -126,13 +124,19 @@ function selectRepo(ele) {
 }
 function cloneRepo() {
     if (url === null) {
-        updateModalText("Ops! Error occors");
+        updateModalText("Web URL for repo could not be found. Try cloning by providing the repo's web URL directly in the 'Add repository' window");
         return;
     }
-    var splitText = url.split(/\.|:|\//);
+    console.log("cloneRepo().url = " + url);
+    var splitUrl = url.split("/");
     var local;
-    if (splitText.length >= 2) {
-        local = splitText[splitText.length - 2];
+    if (splitUrl.length >= 2) {
+        local = splitUrl[splitUrl.length - 1];
+    }
+    console.log("cloneRepo().local = " + local);
+    if (local == null) {
+        updateModalText("Error: could not define name of repo");
+        return;
     }
     downloadFunc(url, local);
     url = null;
