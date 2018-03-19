@@ -11,13 +11,20 @@ var repoCurrentBranch = "master";
 var modal;
 var span;
 function downloadRepository() {
+    var fullLocalPath;
+    if (document.getElementById("repoSave").value != null || document.getElementById("repoSave").value != "") {
+        var localPath = document.getElementById("repoSave").value;
+        fullLocalPath = require("path").join(__dirname, localPath);
+    }
+    else {
+        fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
+    }
     var cloneURL = document.getElementById("repoClone").value;
-    var localPath = document.getElementById("repoSave").value;
-    downloadFunc(cloneURL, localPath);
+    downloadFunc(cloneURL, fullLocalPath);
 }
-function downloadFunc(cloneURL, localPath) {
-    console.log("downloadFunc().localPath = " + localPath);
-    var fullLocalPath = require("path").join(__dirname, localPath);
+
+function downloadFunc(cloneURL, fullLocalPath) {
+    console.log("downloadFunc().fullLocalPath = " + fullLocalPath);
     var options = {};
     displayModal("Cloning Repository...");
     options = {
@@ -35,9 +42,9 @@ function downloadFunc(cloneURL, localPath) {
         .then(function (repository) {
         console.log("Repo successfully cloned");
         updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
-        addCommand("git clone " + cloneURL + " " + localPath);
+        addCommand("git clone " + cloneURL + " " + fullLocalPath);
         repoFullPath = fullLocalPath;
-        repoLocalPath = localPath;
+        repoLocalPath = fullLocalPath;
         refreshAll(repository);
     }, function (err) {
         updateModalText("Clone Failed - " + err);
@@ -45,8 +52,16 @@ function downloadFunc(cloneURL, localPath) {
     });
 }
 function openRepository() {
-    var localPath = document.getElementById("repoOpen").value;
-    var fullLocalPath = require("path").join(__dirname, localPath);
+    if (document.getElementById("repoOpen").value == null || document.getElementById("repoOpen").value == "") {
+        var localPath = document.getElementById("dirPickerOpenLocal").files[0].webkitRelativePath;
+        var fullLocalPath = document.getElementById("dirPickerOpenLocal").files[0].path;
+        document.getElementById("repoOpen").value = fullLocalPath;
+        document.getElementById("repoOpen").text = fullLocalPath;
+    }
+    else {
+        var localPath = document.getElementById("repoOpen").value;
+        var fullLocalPath = require("path").join(__dirname, localPath);
+    }
     console.log("Trying to open repository at " + fullLocalPath);
     displayModal("Opening Local Repository...");
     Git.Repository.open(fullLocalPath).then(function (repository) {
