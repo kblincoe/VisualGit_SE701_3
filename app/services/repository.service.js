@@ -1,10 +1,5 @@
 "use strict";
-<<<<<<< HEAD
-exports.__esModule = true;
-=======
-//exports.__esModule = true;
->>>>>>> 4ae6df0... Warnings Draft Implementation
-var RepositoryService = /** @class */ (function () {
+var RepositoryService = (function () {
     function RepositoryService() {
     }
     RepositoryService.prototype.getRepoName = function () {
