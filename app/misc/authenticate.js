@@ -13,8 +13,8 @@ var repoList = {};
 var url;
 var signed = 0;
 var changes = 0;
-// sometimes still logs out user?
-//Called then user wushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
+//NOTE: for interaction with Issue #7, it must be made that variables are reset when user is sent back to the login page. (Such as signed,changes and CommitButNoPush)
+//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
 function CommitNoPush() {
     if (CommitButNoPush == 1) {
         $("#modalW2").modal();

@@ -12,7 +12,6 @@ let repo, index, oid, remote, commitMessage;
 let filesToAdd = [];
 let theirCommit = null;
 let modifiedFiles;
-let warnbool;
 var CommitButNoPush = 0;
 
 function addAndCommit() {
@@ -516,16 +515,13 @@ function ExitBeforePush(){
 	$("#modalW").modal();
 }
 
-function Confirmed(){	
-	
+function Confirmed(){		
 }
 
 // makes the onbeforeunload function nothing so the window actually closes; then closes it.
 function Close(){
 	window.onbeforeunload = Confirmed;
 	window.close();
-	
-	//location.reload();
 	}
 
 function Reload(){

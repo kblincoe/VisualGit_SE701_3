@@ -11,7 +11,6 @@ var repo, index, oid, remote, commitMessage;
 var filesToAdd = [];
 var theirCommit = null;
 var modifiedFiles;
-var warnbool;
 var CommitButNoPush = 0;
 function addAndCommit() {
     var repository;
@@ -475,7 +474,6 @@ function Confirmed() {
 function Close() {
     window.onbeforeunload = Confirmed;
     window.close();
-    //location.reload();
 }
 function Reload() {
     window.onbeforeunload = Confirmed;

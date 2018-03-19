@@ -135,7 +135,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been Committed or Pushed. If you exit or reload now you will lose progress.
+            You have changes that have not been committed or pushed. If you exit or reload now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
@@ -157,7 +157,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been Committed or Pushed. if you log out now you will lose progress.
+            You have changes that have not been committed or pushed. If you log out now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
@@ -177,7 +177,7 @@ import { GraphService } from "../services/graph.service";
             <h4 class="modal-title">Warning!</h4>
           </div>
           <div class="modal-body" id="modal-text-box">
-            You have changes that have not been Committed or Pushed. if you Pull now you will lose progress.
+            You have changes that have not been committed or pushed. If you pull now you will lose progress.
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>
