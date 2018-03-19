@@ -1,3 +1,8 @@
+"use strict";
+/// <reference path="git.ts" />
+//exports.__esModule = true;
+var Git = require("nodegit");
+var repo;
 var github = require("octonode");
 var username;
 var password;
@@ -6,7 +11,37 @@ var client;
 var avaterImg;
 var repoList = {};
 var url;
+var signed = 0;
+var changes = 0;
+//NOTE: for interaction with Issue #7, it must be made that variables are reset when user is sent back to the login page. (Such as signed,changes and CommitButNoPush)
+//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
+function CommitNoPush() {
+    if (CommitButNoPush == 1) {
+        $("#modalW2").modal();
+    }
+}
 function signInHead(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    console.log(username + '      ' + password);
+    if (signed == 1) {
+        if ((changes == 1) || (CommitButNoPush == 1)) {
+            $("#modalW2").modal();
+        }
+        else {
+            getUserInfo(callback);
+        }
+    }
+    else {
+        getUserInfo(callback);
+    }
+}
+function LogInAfterConfirm(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    getUserInfo(callback);
+}
+function ModalSignIn(callback) {
     username = document.getElementById("Email1").value;
     password = document.getElementById("Password1").value;
     console.log(username + '      ' + password);
@@ -39,11 +74,13 @@ function getUserInfo(callback) {
             // doc.appendChild(elem);
             // doc = document.getElementById("log");
             // doc.innerHTML = 'sign out';
-            
+
             var docGitUser = document.getElementById("githubname");
             docGitUser.innerHTML = Object.values(data)[0];
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
+            signed = 1;
+          
             callback();
         }
     });
@@ -87,13 +124,19 @@ function selectRepo(ele) {
 }
 function cloneRepo() {
     if (url === null) {
-        updateModalText("Ops! Error occors");
+        updateModalText("Web URL for repo could not be found. Try cloning by providing the repo's web URL directly in the 'Add repository' window");
         return;
     }
-    var splitText = url.split(/\.|:|\//);
+    console.log("cloneRepo().url = " + url);
+    var splitUrl = url.split("/");
     var local;
-    if (splitText.length >= 2) {
-        local = splitText[splitText.length - 2];
+    if (splitUrl.length >= 2) {
+        local = splitUrl[splitUrl.length - 1];
+    }
+    console.log("cloneRepo().local = " + local);
+    if (local == null) {
+        updateModalText("Error: could not define name of repo");
+        return;
     }
     downloadFunc(url, local);
     url = null;
