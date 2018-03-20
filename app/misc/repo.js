@@ -20,9 +20,16 @@ function downloadRepository() {
         fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
     }
     var cloneURL = document.getElementById("repoClone").value;
-    downloadFunc(cloneURL, fullLocalPath);
+
+    if (!cloneURL || cloneURL.length === 0) {
+        updateModalText("Clone Failed - Empty URL Given");
+    }
+    else {
+        downloadFunc(cloneURL, fullLocalPath);
+    }
 }
 function downloadFunc(cloneURL, fullLocalPath) {
+    console.log("downloadFunc().fullLocalPath = " + fullLocalPath);
     var options = {};
     displayModal("Cloning Repository...");
     options = {

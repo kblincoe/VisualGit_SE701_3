@@ -21,11 +21,17 @@ function downloadRepository() {
     fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
   }
   let cloneURL = document.getElementById("repoClone").value;
-  downloadFunc(cloneURL, fullLocalPath);
+
+  if (!cloneURL || cloneURL.length === 0) {
+      updateModalText("Clone Failed - Empty URL Given");
+  } else {
+      downloadFunc(cloneURL, fullLocalPath);
+  }
+
 }
 
-//Function takes full path to where repo should be saved
 function downloadFunc(cloneURL, fullLocalPath) {
+  console.log("downloadFunc().fullLocalPath = " + fullLocalPath);
   let options = {};
 
   displayModal("Cloning Repository...");
