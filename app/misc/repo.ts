@@ -14,7 +14,13 @@ let span;
 function downloadRepository() {
   let cloneURL = document.getElementById("repoClone").value;
   let localPath = document.getElementById("repoSave").value;
-  downloadFunc(cloneURL, localPath);
+
+  if (!cloneURL || cloneURL.length === 0) {
+      updateModalText("Clone Failed - Empty URL Given");
+  } else {
+      downloadFunc(cloneURL, localPath);
+  }
+
 }
 
 function downloadFunc(cloneURL, localPath) {
