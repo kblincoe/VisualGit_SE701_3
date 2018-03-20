@@ -13,9 +13,15 @@ var span;
 function downloadRepository() {
     var cloneURL = document.getElementById("repoClone").value;
     var localPath = document.getElementById("repoSave").value;
-    downloadFunc(cloneURL, localPath);
+    if (!cloneURL || cloneURL.length === 0) {
+        updateModalText("Clone Failed - Empty URL Given");
+    }
+    else {
+        downloadFunc(cloneURL, localPath);
+    }
 }
 function downloadFunc(cloneURL, localPath) {
+    console.log("downloadFunc().localPath = " + localPath);
     var fullLocalPath = require("path").join(__dirname, localPath);
     var options = {};
     displayModal("Cloning Repository...");

@@ -35,6 +35,8 @@ import { Component } from "@angular/core";
         <br>
         <div>
           <button type="submit" style="width:280px;" class="btn btn-success" (click)="switchToMainPanel()">Sign In</button>
+          <br>
+          <button style="width:280px;" class="btn btn-link" (click)="openGitHubPasswordResetPage()">Forgot your password?</button>
         </div>
         <br>
         <button type="submit" style="width:280px;" class="btn btn-primary" onclick="switchToMainPanel()">Continue without sign in</button>
@@ -46,5 +48,8 @@ import { Component } from "@angular/core";
 export class AuthenticateComponent {
   switchToMainPanel(): void {
     signInPage(switchToMainPanel);
+  }
+  openGitHubPasswordResetPage(): void {
+    window.open("https://github.com/password_reset", "_blank");
   }
 }
