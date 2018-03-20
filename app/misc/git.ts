@@ -482,7 +482,7 @@ function revertCommit(name: string) {
   })
   .then(function(commit) {
     let revertOptions = new Git.RevertOptions();
-    if (commit.parents().length > 1) {
+    if (commit.parents().length > 1) { 
       revertOptions.mainline = 1;
     }
     return Git.Revert.revert(repos, commit, revertOptions);
@@ -535,23 +535,6 @@ function displayModifiedFiles() {
           });
       }
 
-      // Find HOW the file has been modified
-      function calculateModification(status) {
-        if (status.isNew()) {
-          return "NEW";
-        } else if (status.isModified()) {
-          return "MODIFIED";
-        } else if (status.isDeleted()) {
-          return "DELETED";
-        } else if (status.isTypechange()) {
-          return "TYPECHANGE";
-        } else if (status.isRenamed()) {
-          return "RENAMED";
-        } else if (status.isIgnored()) {
-          return "IGNORED";
-        }
-      }
-
       // Add the modified file to the left file panel
       function displayModifiedFile(file) {
         let filePath = document.createElement("p");
@@ -588,7 +571,7 @@ function displayModifiedFiles() {
             if (fileElement.className === "file file-created") {
               printNewFile(file.filePath);
             } else {
-              printFileDiff(file.filePath)；
+              printFileDiff(file.filePath);
             }
           } else {
             hideDiffPanel();
@@ -664,5 +647,77 @@ function displayModifiedFiles() {
   },
   function(err) {
     console.log("waiting for repo to be initialised");
+  });
+}
+
+// Find HOW the file has been modified
+function calculateModification(status) {
+  if (status.isNew()) {
+    return "NEW";
+  } else if (status.isModified()) {
+    return "MODIFIED";
+  } else if (status.isDeleted()) {
+    return "DELETED";
+  } else if (status.isTypechange()) {
+    return "TYPECHANGE";
+  } else if (status.isRenamed()) {
+    return "RENAMED";
+  } else if (status.isIgnored()) {
+    return "IGNORED";
+  }
+}
+
+function deleteFile(filePath: string) {
+  let newFilePath = filePath.replace(/\\/gi, "/");
+  if (fs.existsSync(newFilePath)) {
+    fs.unlink(newFilePath, (err) => {
+      if (err) {
+        alert("An error occurred updating the file" + err.message);
+        console.log(err);
+        return;
+      }
+      console.log("File successfully deleted");
+    });
+  } else {
+    alert("This file doesn't exist, cannot delete");
+  }
+}
+
+function cleanRepo() {
+  let fileCount = 0;
+  Git.Repository.open(repoFullPath)
+  .then(function(repo) {
+    console.log("Removing untracked files")
+    displayModal("Removing untracked files...");
+    addCommand("git clean -f");
+    repo.getStatus().then(function(arrayStatusFiles) {
+      arrayStatusFiles.forEach(deleteUntrackedFiles);
+
+      //Gets NEW/untracked files and deletes them
+      function deleteUntrackedFiles(file) {
+        let filePath = repoFullPath + "\\" + file.path();
+        let modification = calculateModification(file);
+        if(modification === "NEW") {
+          console.log("DELETING FILE " + filePath);
+          deleteFile(filePath);
+          console.log("DELETION SUCCESSFUL");
+          fileCount++;
+        }
+      }
+
+    })
+    .then(function() {
+      console.log("Cleanup successful");
+      if(fileCount !== 0) {
+        updateModalText("Cleanup successful. Removed " + fileCount + " files.");
+      } else {
+        updateModalText("Nothing to remove.")
+      }
+      refreshAll(repo);
+    });
+  },
+  function(err) {
+    console.log("Waiting for repo to be initialised");
+    displayModal("Please select a valid repository");
   });
 }
