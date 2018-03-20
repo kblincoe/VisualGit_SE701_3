@@ -1,6 +1,5 @@
 "use strict";
-/// <reference path="git.ts" />
-//exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var Git = require("nodegit");
 var repo;
 var github = require("octonode");
@@ -13,7 +12,6 @@ var repoList = {};
 var url;
 var signed = 0;
 var changes = 0;
-//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
 function CommitNoPush() {
     if (CommitButNoPush == 1) {
         $("#modalW2").modal();
@@ -64,15 +62,6 @@ function getUserInfo(callback) {
         }
         else {
             avaterImg = Object.values(data)[2];
-            // let doc = document.getElementById("avater");
-            // doc.innerHTML = "";
-            // var elem = document.createElement("img");
-            // elem.width = 40;
-            // elem.height = 40;
-            // elem.src = avaterImg;
-            // doc.appendChild(elem);
-            // doc = document.getElementById("log");
-            // doc.innerHTML = 'sign out';
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
             signed = 1;
@@ -93,22 +82,6 @@ function getUserInfo(callback) {
             }
         }
     });
-    // let scopes = {
-    //   'add_scopes': ['user', 'repo', 'gist'],
-    //   'note': 'admin script'
-    // };
-    //
-    // github.auth.config({
-    //   username: username,
-    //   password: password
-    // }).login(scopes, function (err, id, token) {
-    //   if (err !== null) {
-    //     console.log("login fail -- " + err);
-    //   }
-    //   aid = id;
-    //   atoken = token;
-    //   console.log(id, token);
-    // });
 }
 function selectRepo(ele) {
     url = repoList[ele.innerHTML];

@@ -199,8 +199,8 @@ function PullBuffer(){
 	else {
 		pullFromRemote();
 	}
-	
-	
+
+
 }
 
 function pullFromRemote() {
@@ -493,7 +493,7 @@ function revertCommit(name: string) {
   })
   .then(function(commit) {
     let revertOptions = new Git.RevertOptions();
-    if (commit.parents().length > 1) { 
+    if (commit.parents().length > 1) {
       revertOptions.mainline = 1;
     }
     return Git.Revert.revert(repos, commit, revertOptions);
@@ -516,8 +516,8 @@ function ExitBeforePush(){
 	$("#modalW").modal();
 }
 
-function Confirmed(){	
-	
+function Confirmed(){
+
 }
 
 // makes the onbeforeunload function nothing so the window actually closes; then closes it.
@@ -536,7 +536,7 @@ function Reload(){
 
 function displayModifiedFiles() {
   modifiedFiles = [];
-  
+
   Git.Repository.open(repoFullPath)
   .then(function(repo) {
     console.log(repo.isMerging() + "ojoijnkbunmm");
@@ -586,12 +586,12 @@ function displayModifiedFiles() {
           return "IGNORED";
         }
       }
-	  
+
 	  function Confirmation(){
 		$("#modalW").modal();
 		return 'Hi';
 	}
-	  
+
       function displayModifiedFile(file) {
         let filePath = document.createElement("p");
         filePath.className = "file-path";
@@ -615,6 +615,11 @@ function displayModifiedFiles() {
         let checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.className = "checkbox";
+        checkbox.onclick = function(){
+          if(!checkbox.checked){
+            document.getElementById('select-all-checkbox').checked = false;
+          }
+        }
         fileElement.appendChild(checkbox);
 
         document.getElementById("files-changed").appendChild(fileElement);
