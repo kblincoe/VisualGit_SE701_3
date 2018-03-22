@@ -38,8 +38,13 @@ function addAndCommit() {
         filesToAdd.push(fileElementChildren[0].innerHTML);
       }
     }
-    console.log("2.1");
-    return index.addAll(filesToStage);
+    if (filesToStage.length > 0) {
+      console.log("2.1");
+      return index.addAll(filesToStage);
+    } else {
+      //If no files checked, then throw error to stop empty commits
+      throw new Error("No files selected to commit.");
+    }
   })
 
   .then(function() {
@@ -101,7 +106,12 @@ function addAndCommit() {
     refreshAll(repository);
   }, function(err) {
     console.log(err);
-    updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+    // Added error thrown for if files not selected
+    if (err.message == "No files selected to commit.") {
+      displayModal(err.message);
+    } else {
+      updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+    }
   });
 }
 
