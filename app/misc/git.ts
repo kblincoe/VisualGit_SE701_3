@@ -331,6 +331,7 @@ function createBranch() {
     refreshAll(repos);
     console.log("All done!");
   });
+  document.getElementById("branchName").value = "";
 }
 
 function mergeLocalBranches(element) {
@@ -503,7 +504,7 @@ function revertCommit(name: string) {
   })
   .then(function(commit) {
     let revertOptions = new Git.RevertOptions();
-    if (commit.parents().length > 1) { 
+    if (commit.parents().length > 1) {
       revertOptions.mainline = 1;
     }
     return Git.Revert.revert(repos, commit, revertOptions);

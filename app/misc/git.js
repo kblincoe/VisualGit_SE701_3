@@ -293,6 +293,7 @@ function createBranch() {
         refreshAll(repos);
         console.log("All done!");
     });
+    document.getElementById("branchName").value = "";
 }
 function mergeLocalBranches(element) {
     var bn = element.innerHTML;
