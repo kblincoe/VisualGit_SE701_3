@@ -1,6 +1,5 @@
 "use strict";
-/// <reference path="git.ts" />
-//exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var Git = require("nodegit");
 var repo;
 var github = require("octonode");
@@ -13,7 +12,6 @@ var repoList = {};
 var url;
 var signed = 0;
 var changes = 0;
-//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
 function CommitNoPush() {
     if (CommitButNoPush == 1) {
         $("#modalW2").modal();
