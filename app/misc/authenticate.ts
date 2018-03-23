@@ -100,6 +100,9 @@ function getUserInfo(callback) {
       // doc.appendChild(elem);
       // doc = document.getElementById("log");
       // doc.innerHTML = 'sign out';
+      var docGitUser = document.getElementById("githubname");
+      docGitUser.innerHTML = Object.values(data)[0];
+
       let doc = document.getElementById("avatar");
       doc.innerHTML = 'Sign out';
 	  signed = 1;
@@ -170,4 +173,27 @@ function cloneRepo() {
   downloadFunc(url, local);
   url = null;
   $('#repo-modal').modal('hide');
+}
+
+function signInOrOut() {
+  let doc = document.getElementById("avatar");
+  if (doc.innerHTML == 'Sign out'){
+    $('#avatar').removeAttr('data-toggle');
+    
+    if ((changes == 1) || (CommitButNoPush == 1)){
+			$("#modalW2").modal();
+    }
+    else {
+      redirectToHomePage();
+    }
+  }
+}
+
+function redirectToHomePage() {
+  window.onbeforeunload = Confirmed;
+  window.location.href = "index.html";
+  signed = 0;
+  changes = 0;
+  CommitButNoPush = 0; 
+  //LogInAfterConfirm();
 }

@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+//Object.defineProperty(exports, "__esModule", { value: true });
 var opn = require('opn');
 var $ = require("jquery");
 var Git = require("nodegit");

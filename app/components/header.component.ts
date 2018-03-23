@@ -41,14 +41,16 @@ import { GraphService } from "../services/graph.service";
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-            <li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
-            <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
+            <li class="upload"><a href="#"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></a></li>
+            <li class="download"><a href="#"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullBuffer()" title="Pull"></i></a></li>
+            <li class="clone"><a href="#"><i class="fa fa-clone fa-2x col-md-2" aria-hidden="true" onclick="cloneFromRemote()" title="Clone"></i></a></li>
             <a href="#"><img src="./assets/Clean-Dark.svg" height="48" width="48" onclick="cleanRepo()" class="add-repository-button" title="Clean"></a>
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
             <li>
-              <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1">Sign in</a>
+              <label id="githubname" style="color:white"></label>
+              <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1" onclick="signInOrOut()>Sign in</a>
             </li>
           </ul>
           <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse1">
@@ -104,9 +106,9 @@ import { GraphService } from "../services/graph.service";
         </div>
       </div>
     </nav>
-	
-	
-	
+
+
+
     <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -120,12 +122,12 @@ import { GraphService } from "../services/graph.service";
             unset
           </div>
           <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>	
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
-	
+
 	<div id="modalW" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -141,13 +143,13 @@ import { GraphService } from "../services/graph.service";
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >Exit</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>	
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
     </div>
-	
-	
+
+
 	<div id="modalW2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -163,12 +165,12 @@ import { GraphService } from "../services/graph.service";
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>	
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
     </div>
-	
+
 	<div id="modalW3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -183,13 +185,11 @@ import { GraphService } from "../services/graph.service";
           </div>
           <div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>	
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
     </div>
-	
-	
     <div id="repo-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -217,9 +217,9 @@ export class HeaderComponent   {
   switchToMainPanel(): void {
     signInHead(collpaseSignPanel);
   }
-  
+
   WarningSignIn(): void {
-    LogInAfterConfirm();
+    redirectToHomePage();
   }
-  
+
 }
