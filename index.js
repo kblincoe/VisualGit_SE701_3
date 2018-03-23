@@ -3,6 +3,7 @@
 const electron = require('electron');
 const app = electron.app;
 const Menu = electron.Menu;
+const BrowserWindow = electron.BrowserWindow;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -44,6 +45,27 @@ function setMyMenu() {
 			{role: 'minimize'},
 			{type: 'separator'},
 			{role: 'close'}
+		]
+	},
+	{
+		label: 'Style',
+		submenu: [
+      {
+				label: 'White',
+				click () {
+					var focusedWindow = BrowserWindow.getFocusedWindow();
+      		focusedWindow.webContents.send('change-to-white-style');
+          console.log('white');
+        }
+			},
+			{
+				label: 'Default',
+				click () {
+					var focusedWindow = BrowserWindow.getFocusedWindow();
+					focusedWindow.webContents.send('change-to-default-style');
+					console.log('default');
+				}
+			}
 		]
 	},
 	{

@@ -44,6 +44,16 @@
 </html>
 
 <script>
+const ipcRenderer = require('electron').ipcRenderer;
+
+ipcRenderer.on('change-to-white-style', function() {
+  changeColor('white');
+});
+
+ipcRenderer.on('change-to-default-style', function() {
+  changeColor('default');
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     // Add click event to Commit button
