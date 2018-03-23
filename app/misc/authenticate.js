@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Git = require("nodegit");
 var repo;
 var github = require("octonode");
@@ -47,7 +45,14 @@ function ModalSignIn(callback) {
 function signInPage(callback) {
     username = document.getElementById("username").value;
     password = document.getElementById("password").value;
+    if (rememberLogin.checked == true) {
+        encrypt(username, password);
+    }
     getUserInfo(callback);
+}
+function loginWithSaved(callback) {
+    document.getElementById("username").value = getUsername();
+    document.getElementById("password").value = getPassword();
 }
 function getUserInfo(callback) {
     cred = Git.Cred.userpassPlaintextNew(username, password);
