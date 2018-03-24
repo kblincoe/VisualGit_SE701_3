@@ -1,7 +1,8 @@
 /// <reference path="git.ts" />
 
-import * as nodegit from "git";
-import NodeGit, { Status } from "nodegit";
+
+//import * as nodegit from "git";
+//import NodeGit, { Status } from "nodegit";
 
 let Git = require("nodegit");
 let repo;
@@ -59,8 +60,22 @@ function ModalSignIn(callback){
 function signInPage(callback) {
   username = document.getElementById("username").value;
   password = document.getElementById("password").value;
+
+  if (rememberLogin.checked == true) {
+    encrypt(username, password);
+  }
+
   getUserInfo(callback);
 }
+
+
+function loginWithSaved(callback) {
+  
+    document.getElementById("username").value = getUsername();
+    document.getElementById("password").value = getPassword(); //get decrypted username n password  
+  
+  }
+  
 
 function getUserInfo(callback) {
 	
