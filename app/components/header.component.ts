@@ -14,7 +14,7 @@ import { GraphService } from "../services/graph.service";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository">
+          <a href="#"><img src="./assets/AddRepositoryFolder.svg" onclick="switchToAddRepositoryPanel()" class="add-repository-button" title="Add Repository"></a>
         </div>
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="nav navbar-nav col-md-5 hidden-xs">
@@ -24,7 +24,7 @@ import { GraphService } from "../services/graph.service";
             </li>
             <li><img src="./assets/RightArrow.svg" class="right-arrow"></li>
             <li class="branch-name dropdown">
-              <a class="dropdown-toggle" id="branch-name" data-toggle="dropdown">
+              <a href="#" class="dropdown-toggle" id="branch-name" data-toggle="dropdown" onclick="switchToMainPanel()">
                 branch<span class="caret"></span>
               </a>
               <ul class="dropdown-menu" id="branch-dropdown" role="menu" aria-labelledby="branch-name">
@@ -41,12 +41,14 @@ import { GraphService } from "../services/graph.service";
           </ul>
 
           <ul class="navbar-nav col-md-4 hidden-xs">
-            <li class="upload"><i class="fa fa-cloud-upload fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"></i></li>
-            <li class="download"><i class="fa fa-cloud-download fa-2x col-md-2" aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"></i></li>
+            <li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
+            <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
+            <a href="#"><img src="./assets/Clean-Dark.svg" height="48" width="48" onclick="cleanRepo()" class="add-repository-button" title="Clean"></a>
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
             <li>
+              <label id="githubname" style="color:white"></label>
               <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1">Sign in</a>
             </li>
           </ul>
@@ -98,10 +100,14 @@ import { GraphService } from "../services/graph.service";
             </li>
             <li class="upload" onclick="pushToRemote()"><a href="#">&nbsp;&nbsp;pull</a></li>
             <li class="download"onclick="pullFromRemote()"><a href="#">&nbsp;&nbsp;push</a></li>
+            <li class="clean" onclick="cleanRepo()"><a href="#">&nbsp;&nbsp;clean</a></li>
           </ul>
         </div>
       </div>
     </nav>
+
+
+
     <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -115,7 +121,70 @@ import { GraphService } from "../services/graph.service";
             unset
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<div id="modalW" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Warning!</h4>
+          </div>
+          <div class="modal-body" id="modal-text-box">
+            You have changes that have not been committed or pushed. If you exit or reload now you will lose progress.
+          </div>
+          <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >Exit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+	<div id="modalW2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Warning!</h4>
+          </div>
+          <div class="modal-body" id="modal-text-box">
+
+            You have changes that have not been committed or pushed. If you log out now you will lose progress.
+          </div>
+          <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<div id="modalW3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Warning!</h4>
+          </div>
+          <div class="modal-body" id="modal-text-box">
+            You have changes that have not been committed or pushed. If you Pull now you will lose progress.
+          </div>
+          <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
@@ -147,4 +216,9 @@ export class HeaderComponent   {
   switchToMainPanel(): void {
     signInHead(collpaseSignPanel);
   }
+
+  WarningSignIn(): void {
+    LogInAfterConfirm();
+  }
+
 }

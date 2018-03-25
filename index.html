@@ -19,7 +19,10 @@
     <script src="app/misc/graphSetup.js"></script>
     <script src="app/misc/router.js"></script>
     <script src="app/misc/authenticate.js"></script>
+    <script src="app/misc/readCredentials.js"></script>
+    <script src="app/misc/storeCredentials.js"></script>    
     <script src="app/misc/color.js"></script>
+    <script src="app/misc/file.js"></script>
     <link href="node_modules/vis/dist/vis.min.css" rel="stylesheet" type="text/css">
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -61,6 +64,15 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log("clicked");
       addAndCommit();
     });
+
+    document.getElementById('save-button').addEventListener("click", function() {
+      saveFile();
+    });
+
+    document.getElementById('cancel-button').addEventListener("click", function() {
+      cancelEdit();
+    });
+
   }, 2000);
 
   // Update modified files on left file panel every X seconds
@@ -88,7 +100,13 @@ $('#repo-modal').on('hidden.bs.modal', function (e) {
            callback: function(itemKey, opt) {
              let content = $trigger.text();
              console.log(repoFullPath + "/" + content);
-             opn(repoFullPath + "/" + content);
+             let doc = document.getElementById("diff-panel-body");
+             doc.innerHTML = "";
+             doc.contentEditable = "true";
+
+             displayDiffPanel();
+             enableSaveCancelButton();
+             readFromFile(content);
            }
          }
        }
