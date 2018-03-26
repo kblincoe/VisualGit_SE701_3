@@ -15,10 +15,6 @@ let modifiedFiles;
 let warnbool;
 var CommitButNoPush = 0;
 
-function cloneFromRemote(){
-  switchToClonePanel();
-}
-
 function addAndCommit() {
   let repository;
 

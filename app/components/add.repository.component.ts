@@ -7,18 +7,16 @@ import { Component } from "@angular/core";
       <img src="./assets/Back.svg" (click)="returnToMainPanel()" class="back-button">
 
       <div class="add-repository-body">
-        <div class="clone-body">
-          <div class="title">
-            <h1 class="clone-title">Clone from Internet</h1>
-          </div>
+        <div class="title">
+          <h1 class="clone-title">Clone from Internet</h1>
+        </div>
 
-          <div class="block">
-            <div class="left">
-              <p>URL to clone from</p>
-            </div>
-            <div class="right">
-            <input type="text" oninput="updateLocalPath()" name="repositoryRemote" size="50" id="repoClone" placeholder="https://github.com/user/repository.git"/>
-            </div>
+        <div class="block">
+          <div class="left">
+            <p>URL to clone from</p>
+          </div>
+          <div class="right">
+          <input type="text" oninput="updateLocalPath()" name="repositoryRemote" size="50" id="repoClone" placeholder="https://github.com/user/repository.git"/>
           </div>
         </div>
 
@@ -33,20 +31,19 @@ import { Component } from "@angular/core";
           </div>
         </div>
 
-        <div id="open-local-repository" class="open-local-repository">
-          <div class="title">
-            <h1 class="open-local-repo">Open Local Repository</h1>
-          </div>
 
-          <div class="block">
-            <div class="left">
-              <p>Location of existing repository</p>
-            </div>
-            <div class="right">
-              <input type="text" name="repositoryLocal" size="50" id="repoOpen"/>
-              <button class="button-open" (click)="selectDirectory()">Open</button>
-              <input type="file" id="dirPickerOpenLocal" name="dirList" (change)="openRepository()" style="display: none;" webkitdirectory />
-            </div>
+        <div class="title">
+          <h1 class="open-local-repo">Open Local Repository</h1>
+        </div>
+
+        <div class="block">
+          <div class="left">
+            <p>Location of existing repository</p>
+          </div>
+          <div class="right">
+            <input type="text" name="repositoryLocal" size="50" id="repoOpen"/>
+            <button class="button-open" (click)="selectDirectory()">Open</button>
+            <input type="file" id="dirPickerOpenLocal" name="dirList" (change)="openRepository()" style="display: none;" webkitdirectory />
           </div>
         </div>
       </div>

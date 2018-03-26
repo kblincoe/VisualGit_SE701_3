@@ -384,11 +384,6 @@ body .add-repository-panel .title .clone-title {
   margin-top: 20px;
 }
 
-body .navbar .fa-clone {
-  padding-left: 25px;
-  margin-top: 8px;
-}
-
 body .add-repository-panel .block {
   width: 100%;
   height: 60px;
