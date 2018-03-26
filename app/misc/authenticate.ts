@@ -1,3 +1,12 @@
+/// <reference path="git.ts" />
+
+
+//import * as nodegit from "git";
+//import NodeGit, { Status } from "nodegit";
+
+let Git = require("nodegit");
+let repo;
+
 let github = require("octonode");
 let username;
 let password;
@@ -6,21 +15,70 @@ let client;
 let avaterImg;
 let repoList = {};
 let url;
+var signed = 0;
+var changes = 0;
+
+
+//Called then user pushes to sign out even if they have commited changes but not pushed; prompts a confirmation modal
+
+function CommitNoPush(){
+	if (CommitButNoPush == 1){
+		$("#modalW2").modal();
+	}
+}
 
 function signInHead(callback) {
-  username = document.getElementById("Email1").value;
-  password = document.getElementById("Password1").value;
-  console.log(username + '      ' + password);
-  getUserInfo(callback);
+	username = document.getElementById("Email1").value;
+	password = document.getElementById("Password1").value;
+	console.log(username + '      ' + password);
+	if (signed == 1){
+		if ((changes == 1) || (CommitButNoPush == 1)){
+			$("#modalW2").modal();
+		}
+		else {
+			getUserInfo(callback);
+		}
+	}
+	else{
+	  getUserInfo(callback);
+	}
+}
+
+function LogInAfterConfirm(callback){
+	username = document.getElementById("Email1").value;
+	password = document.getElementById("Password1").value;
+	getUserInfo(callback);
+}
+
+function ModalSignIn(callback){
+	username = document.getElementById("Email1").value;
+	password = document.getElementById("Password1").value;
+	console.log(username + '      ' + password);
+	getUserInfo(callback);
 }
 
 function signInPage(callback) {
   username = document.getElementById("username").value;
   password = document.getElementById("password").value;
+
+  if (rememberLogin.checked == true) {
+    encrypt(username, password);
+  }
+
   getUserInfo(callback);
 }
 
+
+function loginWithSaved(callback) {
+  
+    document.getElementById("username").value = getUsername();
+    document.getElementById("password").value = getPassword(); //get decrypted username n password  
+  
+  }
+  
+
 function getUserInfo(callback) {
+	
   cred = Git.Cred.userpassPlaintextNew(username, password);
 
   client = github.client({
@@ -42,8 +100,13 @@ function getUserInfo(callback) {
       // doc.appendChild(elem);
       // doc = document.getElementById("log");
       // doc.innerHTML = 'sign out';
+      var docGitUser = document.getElementById("githubname");
+      docGitUser.innerHTML = Object.values(data)[0];
+
       let doc = document.getElementById("avatar");
       doc.innerHTML = 'Sign out';
+	  signed = 1;
+
       callback();
     }
   });
@@ -56,8 +119,8 @@ function getUserInfo(callback) {
       for (let i = 0; i < data.length; i++) {
         let rep = Object.values(data)[i];
         console.log(rep['html_url']);
-        displayBranch(rep['name'], "repo-dropdown", "selectRepo(this)");
-        repoList[rep['name']] = rep['html_url'];
+        displayBranch(rep['full_name'], "repo-dropdown", "selectRepo(this)");
+        repoList[rep['full_name']] = rep['html_url'];
       }
     }
   });
@@ -105,8 +168,8 @@ function cloneRepo() {
   if (local == null) {
     updateModalText("Error: could not define name of repo");
     return;
-  } 
-  
+  }
+
   downloadFunc(url, local);
   url = null;
   $('#repo-modal').modal('hide');
