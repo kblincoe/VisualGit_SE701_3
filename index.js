@@ -2,6 +2,7 @@
 
 const electron = require('electron');
 const app = electron.app;
+const Menu = electron.Menu;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -29,6 +30,57 @@ function createMainWindow() {
 	return win;
 }
 
+function setMyMenu() {
+	const myMenu = [
+	{
+		label: 'View',
+		submenu: [
+			{role: 'togglefullscreen'},
+		]
+	},
+	{
+		label: 'Window',
+		submenu: [
+			{role: 'minimize'},
+			{type: 'separator'},
+			{role: 'close'}
+		]
+	},
+	{
+		label: 'Help',
+		submenu: [
+      {
+        label: require('./package.json').name + ': ' + require('./package.json').description,
+        enabled: false
+      },
+      {type: 'separator'},
+			{
+				label: 'Version ' + require('./package.json').version,
+				enabled: false
+			},
+			{
+				label: 'Github Homepage',
+				click () { require('electron').shell.openExternal('https://github.com/kblincoe/VisualGit_SE701'); }
+			},
+			{
+				label: 'Features',
+				click () { require('electron').shell.openExternal('https://github.com/kblincoe/VisualGit_SE701#features'); }
+			},
+			{
+				label: 'Report Bugs or Request new Features',
+				click () { require('electron').shell.openExternal('https://github.com/kblincoe/VisualGit_SE701/issues'); }
+			},
+			{type: 'separator'},
+			{
+				label: 'Learn More ... ',
+				click () { require('electron').shell.openExternal('https://github.com/kblincoe/VisualGit_SE701#help'); }
+			}
+		]
+	}];
+
+	return myMenu;
+}
+
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
@@ -43,4 +95,5 @@ app.on('activate', () => {
 
 app.on('ready', () => {
 	mainWindow = createMainWindow();
+	Menu.setApplicationMenu(Menu.buildFromTemplate(setMyMenu()));
 });
