@@ -13,6 +13,10 @@ import { Component } from "@angular/core";
           </button>
           <ul class="dropdown-menu" id="color-dropdown" role="menu" aria-labelledby="branch-name">
             <li class="white" onclick="changeColor('white')">white</li>
+            <li class="pink" onclick="changeColor('pink')">pink</li>
+            <li class="blue" onclick="changeColor('blue')">blue</li>
+            <li class="navy" onclick="changeColor('navy')">navy</li>
+            <li class="green" onclick="changeColor('green')">green</li>
             <li class="default" onclick="changeColor('default')">default</li>
           </ul>
         </div>
@@ -35,8 +39,6 @@ import { Component } from "@angular/core";
         <br>
         <div>
           <button type="submit" style="width:280px;" class="btn btn-success" (click)="switchToMainPanel()">Sign In</button>
-          <br>
-          <button style="width:280px;" class="btn btn-link" (click)="openGitHubPasswordResetPage()">Forgot your password?</button>
         </div>
         <br>
         <button type="submit" style="width:280px;" class="btn btn-primary" onclick="switchToMainPanel()">Continue without sign in</button>
@@ -48,8 +50,5 @@ import { Component } from "@angular/core";
 export class AuthenticateComponent {
   switchToMainPanel(): void {
     signInPage(switchToMainPanel);
-  }
-  openGitHubPasswordResetPage(): void {
-    window.open("https://github.com/password_reset", "_blank");
   }
 }
