@@ -174,3 +174,26 @@ function cloneRepo() {
   url = null;
   $('#repo-modal').modal('hide');
 }
+
+function signInOrOut() {
+  let doc = document.getElementById("avatar");
+  if (doc.innerHTML == 'Sign out'){
+    $('#avatar').removeAttr('data-toggle');
+    
+    if ((changes == 1) || (CommitButNoPush == 1)){
+			$("#modalW2").modal();
+    }
+    else {
+      redirectToHomePage();
+    }
+  }
+}
+
+function redirectToHomePage() {
+  window.onbeforeunload = Confirmed;
+  window.location.href = "index.html";
+  signed = 0;
+  changes = 0;
+  CommitButNoPush = 0; 
+  //LogInAfterConfirm();
+}
