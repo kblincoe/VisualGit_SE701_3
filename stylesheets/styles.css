@@ -94,6 +94,7 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 body .header {
@@ -148,10 +149,11 @@ body .navbar .dropdown-toggle {
 
 body .file-panel {
   width: 20%;
-  height: 80vh;
+  height: 70vh;
   background-color: #282828;
   float: left;
   z-index: 0;
+  overflow-y: auto;
 }
 
 body .file-panel .modified-files-header .select-all-message {
@@ -354,6 +356,11 @@ body .add-repository-panel .title {
 
 body .add-repository-panel .title .clone-title {
   margin-top: 20px;
+}
+
+body .navbar .fa-clone {
+  padding-left: 25px;
+  margin-top: 8px;
 }
 
 body .add-repository-panel .block {
