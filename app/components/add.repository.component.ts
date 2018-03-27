@@ -26,7 +26,8 @@ import { Component } from "@angular/core";
           </div>
           <div class="right">
             <input type="text" name="repositoryLocal" size="50" id="repoSave"/>
-            <button class="button-clone" (click)="addRepository()">Clone</button>
+            <button class="button-clone" (click)="selectSave()">Clone</button>
+            <input type="file" id="dirPickerSaveNew" name="dirListSave" (change)="addRepository();" style="display: none;" webkitdirectory />
           </div>
         </div>
 
@@ -41,7 +42,8 @@ import { Component } from "@angular/core";
           </div>
           <div class="right">
             <input type="text" name="repositoryLocal" size="50" id="repoOpen"/>
-            <button class="button-open" (click)="openRepository()">Open</button>
+            <button class="button-open" (click)="selectDirectory()">Open</button>
+            <input type="file" id="dirPickerOpenLocal" name="dirList" (change)="openRepository()" style="display: none;" webkitdirectory />
           </div>
         </div>
       </div>
@@ -54,6 +56,28 @@ export class AddRepositoryComponent {
   addRepository(): void {
     downloadRepository();
     switchToMainPanel();
+  }
+
+  //Add function that determines if directory written or not
+  selectSave(): void {
+    if (document.getElementById("repoSave").value == null || document.getElementById("repoSave").value == "") {
+      // If no directory specified, launch file browser
+      document.getElementById("dirPickerSaveNew").click();
+    } else {
+      // If directory is specified, continue as normal
+      this.addRepository();
+    }
+  }
+
+  //Add function that determines if directory written or not
+  selectDirectory(): void {
+    if (document.getElementById("repoOpen").value == null || document.getElementById("repoOpen").value == "") {
+      // If no directory specified, launch file browser
+      document.getElementById("dirPickerOpenLocal").click();
+    } else {
+      // If directory is specified, continue as normal
+      this.openRepository();
+    }
   }
 
   openRepository(): void {

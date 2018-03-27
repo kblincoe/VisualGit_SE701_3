@@ -1,4 +1,5 @@
 "use strict";
+//Object.defineProperty(exports, "__esModule", { value: true });
 var opn = require('opn');
 var $ = require("jquery");
 var Git = require("nodegit");
@@ -10,6 +11,8 @@ var repo, index, oid, remote, commitMessage;
 var filesToAdd = [];
 var theirCommit = null;
 var modifiedFiles;
+var warnbool;
+var CommitButNoPush = 0;
 function addAndCommit() {
     var repository;
     Git.Repository.open(repoFullPath)
@@ -31,8 +34,13 @@ function addAndCommit() {
                 filesToAdd.push(fileElementChildren[0].innerHTML);
             }
         }
-        console.log("2.1");
-        return index.addAll(filesToStage);
+        if (filesToStage.length > 0) {
+            console.log("2.1");
+            return index.addAll(filesToStage);
+        }
+        else {
+            throw new Error("No files selected to commit.");
+        }
     })
         .then(function () {
         console.log("3.0");
@@ -74,6 +82,8 @@ function addAndCommit() {
     })
         .then(function (oid) {
         theirCommit = null;
+        changes = 0;
+        CommitButNoPush = 1;
         console.log("Commit successful: " + oid.tostrS());
         hideDiffPanel();
         clearModifiedFilesList();
@@ -86,7 +96,12 @@ function addAndCommit() {
         refreshAll(repository);
     }, function (err) {
         console.log(err);
-        updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+        if (err.message == "No files selected to commit.") {
+            displayModal(err.message);
+        }
+        else {
+            updateModalText("Oops, error occurs! If you haven't logged in, please login and try again.");
+        }
     });
 }
 function clearModifiedFilesList() {
@@ -153,6 +168,14 @@ function getAllCommits(callback) {
         });
     });
 }
+function PullBuffer() {
+    if ((changes == 1) || (CommitButNoPush == 1)) {
+        $("#modalW3").modal();
+    }
+    else {
+        pullFromRemote();
+    }
+}
 function pullFromRemote() {
     var repository;
     var branch = document.getElementById("branch-name").innerText;
@@ -193,12 +216,17 @@ function pullFromRemote() {
         theirCommit = annotated;
     })
         .then(function () {
-        if (fs.existsSync(repoFullPath + "/.git/MERGE_MSG")) {
+        var conflicsExist = false;
+        if (readFile.exists(repoFullPath + "/.git/MERGE_MSG")) {
+            var tid = readFile.read(repoFullPath + "/.git/MERGE_MSG", null);
+            conflicsExist = tid.indexOf("Conflicts") !== -1;
+        }
+        if (conflicsExist) {
             updateModalText("Conflicts exists! Please check files list on right side and solve conflicts before you commit again!");
             refreshAll(repository);
         }
         else {
-            updateModalText("Successfully pulled from remote branch " + branch + "!");
+            updateModalText("Successfully pulled from remote branch " + branch + ", and your repo is up to date now!");
             refreshAll(repository);
         }
     });
@@ -223,6 +251,8 @@ function pushToRemote() {
                 });
             })
                 .then(function () {
+                CommitButNoPush = 0;
+                window.onbeforeunload = Confirmed;
                 console.log("Push successful");
                 updateModalText("Push successful");
                 refreshAll(repo);
@@ -248,6 +278,7 @@ function createBranch() {
         refreshAll(repos);
         console.log("All done!");
     });
+    document.getElementById("branchName").value = "";
 }
 function mergeLocalBranches(element) {
     var bn = element.innerHTML;
@@ -428,6 +459,19 @@ function revertCommit(name) {
         updateModalText(err);
     });
 }
+function ExitBeforePush() {
+    $("#modalW").modal();
+}
+function Confirmed() {
+}
+function Close() {
+    window.onbeforeunload = Confirmed;
+    window.close();
+}
+function Reload() {
+    window.onbeforeunload = Confirmed;
+    location.reload();
+}
 function displayModifiedFiles() {
     modifiedFiles = [];
     Git.Repository.open(repoFullPath)
@@ -476,11 +520,17 @@ function displayModifiedFiles() {
                     return "IGNORED";
                 }
             }
+            function Confirmation() {
+                $("#modalW").modal();
+                return 'Hi';
+            }
             function displayModifiedFile(file) {
                 var filePath = document.createElement("p");
                 filePath.className = "file-path";
                 filePath.innerHTML = file.filePath;
                 var fileElement = document.createElement("div");
+                window.onbeforeunload = Confirmation;
+                changes = 1;
                 if (file.fileModification === "NEW") {
                     fileElement.className = "file file-created";
                 }
@@ -497,6 +547,11 @@ function displayModifiedFiles() {
                 var checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.className = "checkbox";
+                checkbox.onclick = function () {
+                    if (!checkbox.checked) {
+                        document.getElementById('select-all-checkbox').checked = false;
+                    }
+                };
                 fileElement.appendChild(checkbox);
                 document.getElementById("files-changed").appendChild(fileElement);
                 fileElement.onclick = function () {
@@ -578,5 +633,76 @@ function displayModifiedFiles() {
         });
     }, function (err) {
         console.log("waiting for repo to be initialised");
+    });
+}
+function calculateModification(status) {
+    if (status.isNew()) {
+        return "NEW";
+    }
+    else if (status.isModified()) {
+        return "MODIFIED";
+    }
+    else if (status.isDeleted()) {
+        return "DELETED";
+    }
+    else if (status.isTypechange()) {
+        return "TYPECHANGE";
+    }
+    else if (status.isRenamed()) {
+        return "RENAMED";
+    }
+    else if (status.isIgnored()) {
+        return "IGNORED";
+    }
+}
+function deleteFile(filePath) {
+    var newFilePath = filePath.replace(/\\/gi, "/");
+    if (fs.existsSync(newFilePath)) {
+        fs.unlink(newFilePath, function (err) {
+            if (err) {
+                alert("An error occurred updating the file" + err.message);
+                console.log(err);
+                return;
+            }
+            console.log("File successfully deleted");
+        });
+    }
+    else {
+        alert("This file doesn't exist, cannot delete");
+    }
+}
+function cleanRepo() {
+    var fileCount = 0;
+    Git.Repository.open(repoFullPath)
+        .then(function (repo) {
+        console.log("Removing untracked files");
+        displayModal("Removing untracked files...");
+        addCommand("git clean -f");
+        repo.getStatus().then(function (arrayStatusFiles) {
+            arrayStatusFiles.forEach(deleteUntrackedFiles);
+            function deleteUntrackedFiles(file) {
+                var filePath = repoFullPath + "\\" + file.path();
+                var modification = calculateModification(file);
+                if (modification === "NEW") {
+                    console.log("DELETING FILE " + filePath);
+                    deleteFile(filePath);
+                    console.log("DELETION SUCCESSFUL");
+                    fileCount++;
+                }
+            }
+        })
+            .then(function () {
+            console.log("Cleanup successful");
+            if (fileCount !== 0) {
+                updateModalText("Cleanup successful. Removed " + fileCount + " files.");
+            }
+            else {
+                updateModalText("Nothing to remove.");
+            }
+            refreshAll(repo);
+        });
+    }, function (err) {
+        console.log("Waiting for repo to be initialised");
+        displayModal("Please select a valid repository");
     });
 }
