@@ -1,3 +1,5 @@
+"use strict";
+//Object.defineProperty(exports, "__esModule", { value: true });
 var Git = require("nodegit");
 var repo;
 var github = require("octonode");
@@ -116,4 +118,23 @@ function cloneRepo() {
     downloadFunc(url, local);
     url = null;
     $('#repo-modal').modal('hide');
+}
+function signInOrOut() {
+    var doc = document.getElementById("avatar");
+    if (doc.innerHTML == 'Sign out') {
+        $('#avatar').removeAttr('data-toggle');
+        if ((changes == 1) || (CommitButNoPush == 1)) {
+            $("#modalW2").modal();
+        }
+        else {
+            redirectToHomePage();
+        }
+    }
+}
+function redirectToHomePage() {
+    window.onbeforeunload = Confirmed;
+    window.location.href = "index.html";
+    signed = 0;
+    changes = 0;
+    CommitButNoPush = 0;
 }
