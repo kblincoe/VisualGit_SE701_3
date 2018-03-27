@@ -7,6 +7,7 @@ var branchCommit = [];
 var remoteName = {};
 var localBranches = [];
 var readFile = require("fs-sync");
+var checkFile = require("fs");
 var repoCurrentBranch = "master";
 var modal;
 var span;
@@ -51,9 +52,18 @@ function downloadFunc(cloneURL, localPath) {
 }
 function openRepository() {
     var localPath = document.getElementById("repoOpen").value;
-    var fullLocalPath = require("path").join(__dirname, localPath);
+    var fullLocalPath;
+
+    if (checkFile.existsSync(localPath)) {
+        console.log("Path Exists");
+        fullLocalPath = localPath;
+    } else {
+        fullLocalPath = require("path").join(__dirname, localPath);
+    }
+
     console.log("Trying to open repository at " + fullLocalPath);
     displayModal("Opening Local Repository...");
+
     Git.Repository.open(fullLocalPath).then(function (repository) {
         repoFullPath = fullLocalPath;
         repoLocalPath = localPath;
