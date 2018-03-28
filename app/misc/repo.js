@@ -20,7 +20,6 @@ function downloadRepository() {
         fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
     }
     var cloneURL = document.getElementById("repoClone").value;
-
     if (!cloneURL || cloneURL.length === 0) {
         updateModalText("Clone Failed - Empty URL Given");
     }

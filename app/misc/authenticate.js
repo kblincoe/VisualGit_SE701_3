@@ -1,5 +1,3 @@
-"use strict";
-//Object.defineProperty(exports, "__esModule", { value: true });
 var Git = require("nodegit");
 var repo;
 var github = require("octonode");

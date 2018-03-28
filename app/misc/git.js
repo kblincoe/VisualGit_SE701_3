@@ -1,5 +1,5 @@
 "use strict";
-//Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", { value: true });
 var opn = require('opn');
 var $ = require("jquery");
 var Git = require("nodegit");
@@ -100,7 +100,7 @@ function addAndCommit() {
             displayModal(err.message);
         }
         else {
-            updateModalText("Oops, error occurs! If you haven't logged in, please login and try again.");
+            updateModalText("Oops, error occours! If u haven't login, please login and try again.");
         }
     });
 }
@@ -705,4 +705,25 @@ function cleanRepo() {
         console.log("Waiting for repo to be initialised");
         displayModal("Please select a valid repository");
     });
+}
+function fetchFromOrigin() {
+    console.log("hello");
+    var origin = prompt("Please provide the path for the upstream repository: \n This will sync the current branch to the upstream repository", "https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git");
+    if (origin != null) {
+        var upstreamRepoPath_1 = origin;
+        Git.repository.open(repoFullPath)
+            .then(function (repo) {
+            console.log("beginning fetch");
+            displayModal("Beginning Synchronisation...");
+            addCommand("git remote add upstream " + upstreamRepoPath_1);
+            addCommand("git fetch upstream");
+            addCommand("git merge upstrean/master");
+            console.log("fetch successful");
+            updateModalText("Sync Successful");
+            refreshAll(repo);
+        }, function (err) {
+            console.log("Waiting for repo to be initialised");
+            displayModal("Please select a valid repository");
+        });
+    }
 }
