@@ -801,8 +801,13 @@ function cleanRepo() {
   });
 }
 
+function requestLinkModal() {
+  $("#fetch-modal").modal();
+}
+
 function fetchFromOrigin() {
-  console.log("hello");
+  console.log("begin fetching");
+/*
   let origin = prompt("Please provide the path for the upstream repository: \n This will sync the current branch to the upstream repository", "https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git");
   if (origin != null) {
     let upstreamRepoPath = origin;
@@ -822,4 +827,5 @@ function fetchFromOrigin() {
       displayModal("Please select a valid repository");
     });
   }
+*/
 }

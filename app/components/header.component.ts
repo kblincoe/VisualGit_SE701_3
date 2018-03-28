@@ -44,14 +44,14 @@ import { GraphService } from "../services/graph.service";
             <li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
             <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
             <a href="#"><img src="./assets/Clean-Dark.svg" height="48" width="48" onclick="cleanRepo()" class="add-repository-button" title="Clean"></a>
-            <a href=#><img src="./assets/refresh-button.png" height="48" width="48" onClick="fetchFromOrigin()" class="add-repository-button" title="sync"></a>
+            <a href=#><img src="./assets/refresh-button.png" height="48" width="48" onClick="requestLinkModal()" class="add-repository-button" title="sync"></a>
            
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
             <li>
               <label id="githubname" style="color:white"></label>
-              <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1" onclick="signInOrOut()>Sign in</a>
+              <a class="btn btn-default btn-outline btn-circle"  id="avatar" data-toggle="collapse" href="#nav-collapse1" aria-expanded="false" aria-controls="nav-collapse1" onclick="signInOrOut()">Sign in</a>
             </li>
           </ul>
           <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse1">
@@ -103,7 +103,7 @@ import { GraphService } from "../services/graph.service";
             <li class="upload" onclick="pushToRemote()"><a href="#">&nbsp;&nbsp;pull</a></li>
             <li class="download"onclick="pullFromRemote()"><a href="#">&nbsp;&nbsp;push</a></li>
             <li class="clean" onclick="cleanRepo()"><a href="#">&nbsp;&nbsp;clean</a></li>
-            <li class="sync" onclick="fetchFromOrigin()"><a href="#">&nbsp;&nbsp;sync</a></li>
+            <li class="sync" onclick="requestLinkModal()"><a href="#">&nbsp;&nbsp;sync</a></li>
           </ul>
         </div>
       </div>
@@ -202,6 +202,26 @@ import { GraphService } from "../services/graph.service";
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
+    </div>
+
+    <div id="fetch-modal" class="modal fade" tabindex="-1" role"dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Info</h4>
+            </div>
+            <div class="modal-body" id="modal-text-box">
+              Please provide the HTTP path to the original repository:
+              <input type="text" id="origin-path" value="https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git">
+            </div>
+            <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="fetchFromOrigin()">Confirm</button>  
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
     </div>
   `,
   providers: [RepositoryService, GraphService]
