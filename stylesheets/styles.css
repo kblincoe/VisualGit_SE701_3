@@ -384,6 +384,11 @@ body .add-repository-panel .right .button {
   height: 100%;
 }
 
+body .navbar .fa-clone {
+  padding-left: 25px;
+  margin-top: 8px;
+}
+
 body .footer {
   width: 100%;
   height: 15vh;
