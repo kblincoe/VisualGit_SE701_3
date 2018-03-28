@@ -47,6 +47,32 @@
 </html>
 
 <script>
+const ipcRenderer = require('electron').ipcRenderer;
+
+ipcRenderer.on('change-to-white-style', function() {
+    changeColor('white');
+});
+    
+ipcRenderer.on('change-to-pink-style', function() {
+    changeColor('pink');
+});
+
+ipcRenderer.on('change-to-blue-style', function() {
+    changeColor('blue');
+});
+    
+ipcRenderer.on('change-to-navy-style', function() {
+    changeColor('navy');
+});
+
+ipcRenderer.on('change-to-green-style', function() {
+    changeColor('green');
+});
+
+ipcRenderer.on('change-to-default-style', function() {
+    changeColor('default');
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     // Add click event to Commit button

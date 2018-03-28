@@ -3,6 +3,7 @@
 const electron = require('electron');
 const app = electron.app;
 const Menu = electron.Menu;
+const BrowserWindow = electron.BrowserWindow;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -47,13 +48,65 @@ function setMyMenu() {
 		]
 	},
 	{
+		label: 'Style',
+		submenu: [
+		{
+			label: 'White',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-white-style');
+				console.log('white');
+			}
+		},
+		{
+			label: 'Pink',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-pink-style');
+				console.log('pink');
+			}
+		},
+		{
+			label: 'Blue',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-blue-style');
+				console.log('blue');
+			}
+		},
+		{
+			label: 'Navy',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-navy-style');
+				console.log('navy');
+			}
+		},
+		{
+			label: 'Green',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-green-style');
+				console.log('green');
+			}
+		},
+		{
+			label: 'Default',
+			click () {
+				var focusedWindow = BrowserWindow.getFocusedWindow();
+				focusedWindow.webContents.send('change-to-default-style');
+				console.log('default');
+			}
+		}]
+	},
+	{
 		label: 'Help',
 		submenu: [
-      {
-        label: require('./package.json').name + ': ' + require('./package.json').description,
-        enabled: false
-      },
-      {type: 'separator'},
+			{
+				label: require('./package.json').name + ': ' + require('./package.json').description,
+				enabled: false
+			},
+			{type: 'separator'},
 			{
 				label: 'Version ' + require('./package.json').version,
 				enabled: false
