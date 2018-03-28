@@ -130,7 +130,7 @@ import { GraphService } from "../services/graph.service";
       </div>
     </div>
 
-	<div id="modalW" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div id="modalW" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
@@ -143,8 +143,8 @@ import { GraphService } from "../services/graph.service";
             You have changes that have not been committed or pushed. If you exit or reload now you will lose progress.
           </div>
           <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
-			<button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >Exit</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Reload()"  >Reload</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="Close()"  >Exit</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
@@ -152,7 +152,7 @@ import { GraphService } from "../services/graph.service";
     </div>
 
 
-	<div id="modalW2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div id="modalW2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
@@ -166,14 +166,14 @@ import { GraphService } from "../services/graph.service";
             You have changes that have not been committed or pushed. If you log out now you will lose progress.
           </div>
           <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="WarningSignIn()">OK</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
     </div>
 
-	<div id="modalW3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div id="modalW3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
@@ -186,12 +186,13 @@ import { GraphService } from "../services/graph.service";
             You have changes that have not been committed or pushed. If you Pull now you will lose progress.
           </div>
           <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal"  (click)="pullFromRemote()">OK</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
     </div>
+
     <div id="repo-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -204,7 +205,7 @@ import { GraphService } from "../services/graph.service";
       </div><!-- /.modal-dialog -->
     </div>
 
-    <div id="fetch-modal" class="modal fade" tabindex="-1" role"dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div id="fetch-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">

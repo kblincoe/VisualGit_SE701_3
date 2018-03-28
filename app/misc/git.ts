@@ -807,25 +807,24 @@ function requestLinkModal() {
 
 function fetchFromOrigin() {
   console.log("begin fetching");
-/*
-  let origin = prompt("Please provide the path for the upstream repository: \n This will sync the current branch to the upstream repository", "https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git");
-  if (origin != null) {
-    let upstreamRepoPath = origin;
-    Git.repository.open(repoFullPath)
+  let upstreamRepoPath = document.getElementById("origin-path").value;
+  if (upstreamRepoPath != null) {
+    Git.Repository.open(repoFullPath)
     .then(function(repo) {
-      console.log("beginning fetch")
+      console.log("fetch path valid")
       displayModal("Beginning Synchronisation...");
       addCommand("git remote add upstream " + upstreamRepoPath);
       addCommand("git fetch upstream");
       addCommand("git merge upstrean/master");
       console.log("fetch successful")
-      updateModalText("Sync Successful");
+      updateModalText("Synchronisation Successful");
       refreshAll(repo);
     },
     function(err) {
       console.log("Waiting for repo to be initialised");
       displayModal("Please select a valid repository");
     });
+  } else {
+    displayModal("No Path Found.")
   }
-*/
 }
