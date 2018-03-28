@@ -8,8 +8,6 @@ let Git = require("nodegit");
 let repo;
 
 let github = require("octonode");
-let username;
-let password;
 let aid, atoken;
 let client;
 let avaterImg;
@@ -28,9 +26,7 @@ function CommitNoPush(){
 }
 
 function signInHead(callback) {
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
-	console.log(username + '      ' + password);
+	encryptTemp(document.getElementById("Email1").value, document.getElementById("Password1").value);
 	if (signed == 1){
 		if ((changes == 1) || (CommitButNoPush == 1)){
 			$("#modalW2").modal();
@@ -45,21 +41,16 @@ function signInHead(callback) {
 }
 
 function LogInAfterConfirm(callback){
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
+	encryptTemp(document.getElementById("Email1").value, document.getElementById("Password1").value);
 	getUserInfo(callback);
 }
 
 function ModalSignIn(callback){
-	username = document.getElementById("Email1").value;
-	password = document.getElementById("Password1").value;
-	console.log(username + '      ' + password);
+	encryptTemp(document.getElementById("Email1").value, document.getElementById("Password1").value);
 	getUserInfo(callback);
 }
 
 function signInPage(callback) {
-  username = document.getElementById("username").value;
-  password = document.getElementById("password").value;
 
   if (rememberLogin.checked == true) {
     encrypt(username, password);
@@ -78,12 +69,14 @@ function loginWithSaved(callback) {
   
 
 function getUserInfo(callback) {
-	
-  cred = Git.Cred.userpassPlaintextNew(username, password);
+  
+  encryptTemp(document.getElementById("username").value, document.getElementById("password").value);
+
+  cred = Git.Cred.userpassPlaintextNew(getUsernameTemp(), getPasswordTemp());
 
   client = github.client({
-    username: username,
-    password: password
+    username: getUsernameTemp(),
+    password: getPasswordTemp()
   });
   var ghme = client.me();
   ghme.info(function(err, data, head) {
@@ -101,10 +94,10 @@ function getUserInfo(callback) {
       // doc = document.getElementById("log");
       // doc.innerHTML = 'sign out';
       var docGitUser = document.getElementById("githubname");
-      docGitUser.innerHTML = Object.values(data)[0];
+      //docGitUser.innerHTML = Object.values(data)[0];
 
       let doc = document.getElementById("avatar");
-      doc.innerHTML = 'Sign out';
+      //doc.innerHTML = 'Sign out'; //HAD TO REMOVE THIS LINE OR THE PROGRAM BROKE.
 	  signed = 1;
 
       callback();
