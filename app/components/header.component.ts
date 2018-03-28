@@ -207,7 +207,7 @@ import { GraphService } from "../services/graph.service";
 
     <div id="fetch-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+        <div class="modal-content" style=" width: 602px !important">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -216,7 +216,7 @@ import { GraphService } from "../services/graph.service";
             </div>
             <div class="modal-body" id="modal-text-box">
               Please provide the HTTP path to the original repository:
-              <input type="text" id="origin-path" value="https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git">
+              <input type="text" id="origin-path" style=" width: 554px !important" placeholder="https://github.com/ORIGINAL_OWNER/ORIGINAL_OWNER_REPOSITORY.git">
             </div>
             <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="fetchFromOrigin()">Confirm</button>  
