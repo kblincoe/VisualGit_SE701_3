@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var RepositoryService = (function () {
+exports.__esModule = true;
+var RepositoryService = /** @class */ (function () {
     function RepositoryService() {
     }
     RepositoryService.prototype.getRepoName = function () {

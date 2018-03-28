@@ -20,6 +20,7 @@ function downloadRepository() {
         fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
     }
     var cloneURL = document.getElementById("repoClone").value;
+
     if (!cloneURL || cloneURL.length === 0) {
         updateModalText("Clone Failed - Empty URL Given");
     }
@@ -46,9 +47,9 @@ function downloadFunc(cloneURL, fullLocalPath) {
         .then(function (repository) {
         console.log("Repo successfully cloned");
         updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
-        addCommand("git clone " + cloneURL + " " + fullLocalPath);
+        addCommand("git clone " + cloneURL + " " + localPath);
         repoFullPath = fullLocalPath;
-        repoLocalPath = fullLocalPath;
+        repoLocalPath = localPath;
         refreshAll(repository);
     }, function (err) {
         updateModalText("Clone Failed - " + err);

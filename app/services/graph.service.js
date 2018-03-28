@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var GraphService = (function () {
+exports.__esModule = true;
+var GraphService = /** @class */ (function () {
     function GraphService() {
     }
     return GraphService;
