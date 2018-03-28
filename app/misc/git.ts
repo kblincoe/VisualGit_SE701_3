@@ -12,6 +12,8 @@ let repo, index, oid, remote, commitMessage;
 let filesToAdd = [];
 let theirCommit = null;
 let modifiedFiles;
+let warnbool;
+var CommitButNoPush = 0;
 
 function addAndCommit() {
   let repository;
@@ -36,8 +38,13 @@ function addAndCommit() {
         filesToAdd.push(fileElementChildren[0].innerHTML);
       }
     }
-    console.log("2.1");
-    return index.addAll(filesToStage);
+    if (filesToStage.length > 0) {
+      console.log("2.1");
+      return index.addAll(filesToStage);
+    } else {
+      //If no files checked, then throw error to stop empty commits
+      throw new Error("No files selected to commit.");
+    }
   })
 
   .then(function() {
@@ -84,6 +91,8 @@ function addAndCommit() {
   .then(function(oid) {
     theirCommit = null;
     //console.log("8.0");
+	changes = 0;
+	CommitButNoPush = 1;
     console.log("Commit successful: " + oid.tostrS());
 
     hideDiffPanel();
@@ -97,7 +106,12 @@ function addAndCommit() {
     refreshAll(repository);
   }, function(err) {
     console.log(err);
-    updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+    // Added error thrown for if files not selected
+    if (err.message == "No files selected to commit.") {
+      displayModal(err.message);
+    } else {
+      updateModalText("Oops, error occours! If u haven't login, please login and try again.");
+    }
   });
 }
 
@@ -188,6 +202,15 @@ function getAllCommits(callback) {
     });
 }
 
+function PullBuffer(){
+	if ((changes == 1) || (CommitButNoPush == 1)){
+		$("#modalW3").modal();
+	}
+	else {
+		pullFromRemote();
+	}
+}
+
 function pullFromRemote() {
   let repository;
   let branch = document.getElementById("branch-name").innerText;
@@ -231,11 +254,18 @@ function pullFromRemote() {
     theirCommit = annotated;
   })
   .then(function() {
-    if (fs.existsSync(repoFullPath + "/.git/MERGE_MSG")) {
+    let conflicsExist = false;
+
+    if (readFile.exists(repoFullPath + "/.git/MERGE_MSG")) {
+      let tid = readFile.read(repoFullPath + "/.git/MERGE_MSG", null);
+      conflicsExist = tid.indexOf("Conflicts") !== -1;
+    }
+
+    if(conflicsExist) {
       updateModalText("Conflicts exists! Please check files list on right side and solve conflicts before you commit again!");
       refreshAll(repository);
     } else {
-      updateModalText("Successfully pulled from remote branch " + branch + "!");
+      updateModalText("Successfully pulled from remote branch " + branch + ", and your repo is up to date now!");
       refreshAll(repository);
     }
   });
@@ -244,6 +274,10 @@ function pullFromRemote() {
 
 // });
 }
+
+
+
+
 
 function pushToRemote() {
   let branch = document.getElementById("branch-name").innerText;
@@ -268,6 +302,8 @@ function pushToRemote() {
         );
       })
       .then(function() {
+		CommitButNoPush = 0;
+		window.onbeforeunload = Confirmed;
         console.log("Push successful");
         updateModalText("Push successful");
         refreshAll(repo);
@@ -300,6 +336,7 @@ function createBranch() {
     refreshAll(repos);
     console.log("All done!");
   });
+  document.getElementById("branchName").value = "";
 }
 
 function mergeLocalBranches(element) {
@@ -490,6 +527,29 @@ function revertCommit(name: string) {
   });
 }
 
+// Makes a modal for confirmation pop up instead of actually exiting application for confirmation.
+function ExitBeforePush(){
+	$("#modalW").modal();
+}
+
+function Confirmed(){
+
+}
+
+// makes the onbeforeunload function nothing so the window actually closes; then closes it.
+function Close(){
+	window.onbeforeunload = Confirmed;
+	window.close();
+
+}
+
+
+
+function Reload(){
+	window.onbeforeunload = Confirmed;
+	location.reload();
+}
+
 function displayModifiedFiles() {
   modifiedFiles = [];
 
@@ -525,6 +585,7 @@ function displayModifiedFiles() {
           });
       }
 
+
       // Find HOW the file has been modified
       function calculateModification(status) {
         if (status.isNew()) {
@@ -542,12 +603,18 @@ function displayModifiedFiles() {
         }
       }
 
-      // Add the modified file to the left file panel
+	  function Confirmation(){
+		$("#modalW").modal();
+		return 'Hi';
+	}
+
       function displayModifiedFile(file) {
         let filePath = document.createElement("p");
         filePath.className = "file-path";
         filePath.innerHTML = file.filePath;
         let fileElement = document.createElement("div");
+		window.onbeforeunload = Confirmation;
+		changes = 1;
         // Set how the file has been modified
         if (file.fileModification === "NEW") {
           fileElement.className = "file file-created";
@@ -564,6 +631,11 @@ function displayModifiedFiles() {
         let checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.className = "checkbox";
+        checkbox.onclick = function(){
+          if(!checkbox.checked){
+            document.getElementById('select-all-checkbox').checked = false;
+          }
+        }
         fileElement.appendChild(checkbox);
 
         document.getElementById("files-changed").appendChild(fileElement);
@@ -578,7 +650,7 @@ function displayModifiedFiles() {
             if (fileElement.className === "file file-created") {
               printNewFile(file.filePath);
             } else {
-              printFileDiff(file.filePath)；
+              printFileDiff(file.filePath);
             }
           } else {
             hideDiffPanel();
@@ -654,5 +726,77 @@ function displayModifiedFiles() {
   },
   function(err) {
     console.log("waiting for repo to be initialised");
+  });
+}
+
+// Find HOW the file has been modified
+function calculateModification(status) {
+  if (status.isNew()) {
+    return "NEW";
+  } else if (status.isModified()) {
+    return "MODIFIED";
+  } else if (status.isDeleted()) {
+    return "DELETED";
+  } else if (status.isTypechange()) {
+    return "TYPECHANGE";
+  } else if (status.isRenamed()) {
+    return "RENAMED";
+  } else if (status.isIgnored()) {
+    return "IGNORED";
+  }
+}
+
+function deleteFile(filePath: string) {
+  let newFilePath = filePath.replace(/\\/gi, "/");
+  if (fs.existsSync(newFilePath)) {
+    fs.unlink(newFilePath, (err) => {
+      if (err) {
+        alert("An error occurred updating the file" + err.message);
+        console.log(err);
+        return;
+      }
+      console.log("File successfully deleted");
+    });
+  } else {
+    alert("This file doesn't exist, cannot delete");
+  }
+}
+
+function cleanRepo() {
+  let fileCount = 0;
+  Git.Repository.open(repoFullPath)
+  .then(function(repo) {
+    console.log("Removing untracked files")
+    displayModal("Removing untracked files...");
+    addCommand("git clean -f");
+    repo.getStatus().then(function(arrayStatusFiles) {
+      arrayStatusFiles.forEach(deleteUntrackedFiles);
+
+      //Gets NEW/untracked files and deletes them
+      function deleteUntrackedFiles(file) {
+        let filePath = repoFullPath + "\\" + file.path();
+        let modification = calculateModification(file);
+        if(modification === "NEW") {
+          console.log("DELETING FILE " + filePath);
+          deleteFile(filePath);
+          console.log("DELETION SUCCESSFUL");
+          fileCount++;
+        }
+      }
+
+    })
+    .then(function() {
+      console.log("Cleanup successful");
+      if(fileCount !== 0) {
+        updateModalText("Cleanup successful. Removed " + fileCount + " files.");
+      } else {
+        updateModalText("Nothing to remove.")
+      }
+      refreshAll(repo);
+    });
+  },
+  function(err) {
+    console.log("Waiting for repo to be initialised");
+    displayModal("Please select a valid repository");
   });
 }

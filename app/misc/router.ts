@@ -107,4 +107,10 @@ function enableSaveCancelButton() {
 function disableDiffPanelEditOnHide(){
   let doc = document.getElementById("diff-panel-body");
   doc.contentEditable = "false";
+} 
+
+function useSaved() {
+  console.log('button pressed!');
+  decrypt();
+  loginWithSaved(switchToMainPanel);
 }
