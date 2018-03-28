@@ -801,10 +801,18 @@ function cleanRepo() {
   });
 }
 
+/**
+ * This method is called when the sync button is pressed, and causes the fetch-modal 
+ * to appear on the screen.
+ */
 function requestLinkModal() {
   $("#fetch-modal").modal();
 }
 
+/**
+ * This method is called when a valid URL is given via the fetch-modal, and runs the 
+ * series of git commands which fetch and merge from an upstream repository.
+ */
 function fetchFromOrigin() {
   console.log("begin fetching");
   let upstreamRepoPath = document.getElementById("origin-path").value;
