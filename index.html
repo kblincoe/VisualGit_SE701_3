@@ -19,6 +19,8 @@
     <script src="app/misc/graphSetup.js"></script>
     <script src="app/misc/router.js"></script>
     <script src="app/misc/authenticate.js"></script>
+    <script src="app/misc/readCredentials.js"></script>
+    <script src="app/misc/storeCredentials.js"></script>    
     <script src="app/misc/color.js"></script>
     <script src="app/misc/file.js"></script>
     <link href="node_modules/vis/dist/vis.min.css" rel="stylesheet" type="text/css">
@@ -45,6 +47,32 @@
 </html>
 
 <script>
+const ipcRenderer = require('electron').ipcRenderer;
+
+ipcRenderer.on('change-to-white-style', function() {
+    changeColor('white');
+});
+    
+ipcRenderer.on('change-to-pink-style', function() {
+    changeColor('pink');
+});
+
+ipcRenderer.on('change-to-blue-style', function() {
+    changeColor('blue');
+});
+    
+ipcRenderer.on('change-to-navy-style', function() {
+    changeColor('navy');
+});
+
+ipcRenderer.on('change-to-green-style', function() {
+    changeColor('green');
+});
+
+ipcRenderer.on('change-to-default-style', function() {
+    changeColor('default');
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     // Add click event to Commit button

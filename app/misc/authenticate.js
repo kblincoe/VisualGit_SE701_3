@@ -1,3 +1,7 @@
+"use strict";
+//Object.defineProperty(exports, "__esModule", { value: true });
+var Git = require("nodegit");
+var repo;
 var github = require("octonode");
 var username;
 var password;
@@ -6,7 +10,35 @@ var client;
 var avaterImg;
 var repoList = {};
 var url;
+var signed = 0;
+var changes = 0;
+function CommitNoPush() {
+    if (CommitButNoPush == 1) {
+        $("#modalW2").modal();
+    }
+}
 function signInHead(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    console.log(username + '      ' + password);
+    if (signed == 1) {
+        if ((changes == 1) || (CommitButNoPush == 1)) {
+            $("#modalW2").modal();
+        }
+        else {
+            getUserInfo(callback);
+        }
+    }
+    else {
+        getUserInfo(callback);
+    }
+}
+function LogInAfterConfirm(callback) {
+    username = document.getElementById("Email1").value;
+    password = document.getElementById("Password1").value;
+    getUserInfo(callback);
+}
+function ModalSignIn(callback) {
     username = document.getElementById("Email1").value;
     password = document.getElementById("Password1").value;
     console.log(username + '      ' + password);
@@ -15,7 +47,14 @@ function signInHead(callback) {
 function signInPage(callback) {
     username = document.getElementById("username").value;
     password = document.getElementById("password").value;
+    if (rememberLogin.checked == true) {
+        encrypt(username, password);
+    }
     getUserInfo(callback);
+}
+function loginWithSaved(callback) {
+    document.getElementById("username").value = getUsername();
+    document.getElementById("password").value = getPassword();
 }
 function getUserInfo(callback) {
     cred = Git.Cred.userpassPlaintextNew(username, password);
@@ -30,20 +69,11 @@ function getUserInfo(callback) {
         }
         else {
             avaterImg = Object.values(data)[2];
-            // let doc = document.getElementById("avater");
-            // doc.innerHTML = "";
-            // var elem = document.createElement("img");
-            // elem.width = 40;
-            // elem.height = 40;
-            // elem.src = avaterImg;
-            // doc.appendChild(elem);
-            // doc = document.getElementById("log");
-            // doc.innerHTML = 'sign out';
-            
             var docGitUser = document.getElementById("githubname");
             docGitUser.innerHTML = Object.values(data)[0];
             var doc = document.getElementById("avatar");
             doc.innerHTML = 'Sign out';
+            signed = 1;
             callback();
         }
     });
@@ -56,27 +86,11 @@ function getUserInfo(callback) {
             for (var i = 0; i < data.length; i++) {
                 var rep = Object.values(data)[i];
                 console.log(rep['html_url']);
-                displayBranch(rep['name'], "repo-dropdown", "selectRepo(this)");
-                repoList[rep['name']] = rep['html_url'];
+                displayBranch(rep['full_name'], "repo-dropdown", "selectRepo(this)");
+                repoList[rep['full_name']] = rep['html_url'];
             }
         }
     });
-    // let scopes = {
-    //   'add_scopes': ['user', 'repo', 'gist'],
-    //   'note': 'admin script'
-    // };
-    //
-    // github.auth.config({
-    //   username: username,
-    //   password: password
-    // }).login(scopes, function (err, id, token) {
-    //   if (err !== null) {
-    //     console.log("login fail -- " + err);
-    //   }
-    //   aid = id;
-    //   atoken = token;
-    //   console.log(id, token);
-    // });
 }
 function selectRepo(ele) {
     url = repoList[ele.innerHTML];
@@ -87,15 +101,40 @@ function selectRepo(ele) {
 }
 function cloneRepo() {
     if (url === null) {
-        updateModalText("Ops! Error occors");
+        updateModalText("Web URL for repo could not be found. Try cloning by providing the repo's web URL directly in the 'Add repository' window");
         return;
     }
-    var splitText = url.split(/\.|:|\//);
+    console.log("cloneRepo().url = " + url);
+    var splitUrl = url.split("/");
     var local;
-    if (splitText.length >= 2) {
-        local = splitText[splitText.length - 2];
+    if (splitUrl.length >= 2) {
+        local = splitUrl[splitUrl.length - 1];
+    }
+    console.log("cloneRepo().local = " + local);
+    if (local == null) {
+        updateModalText("Error: could not define name of repo");
+        return;
     }
     downloadFunc(url, local);
     url = null;
     $('#repo-modal').modal('hide');
+}
+function signInOrOut() {
+    var doc = document.getElementById("avatar");
+    if (doc.innerHTML == 'Sign out') {
+        $('#avatar').removeAttr('data-toggle');
+        if ((changes == 1) || (CommitButNoPush == 1)) {
+            $("#modalW2").modal();
+        }
+        else {
+            redirectToHomePage();
+        }
+    }
+}
+function redirectToHomePage() {
+    window.onbeforeunload = Confirmed;
+    window.location.href = "index.html";
+    signed = 0;
+    changes = 0;
+    CommitButNoPush = 0;
 }
