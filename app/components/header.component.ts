@@ -44,8 +44,6 @@ import { GraphService } from "../services/graph.service";
             <li class="upload"><i aria-hidden="true" style="color:white" onclick="pushToRemote()" title="Push"><img src= "./assets/push.png"></i></li>
             <li class="download"><i aria-hidden="true" style="color:white" onclick="pullFromRemote()" title="Pull"><img src= "./assets/pull.png"></i></li>
             <a href="#"><img src="./assets/Clean-Dark.svg" height="48" width="48" onclick="cleanRepo()" class="add-repository-button" title="Clean"></a>
-            <a href=#><img src="./assets/refresh-button.png" height="48" width="48" onClick="fetchFromOrigin()" class="add-repository-button" title="sync"></a>
-           
           </ul>
 
           <ul class="navbar-nav navbar-right hidden-xs">
@@ -58,7 +56,7 @@ import { GraphService } from "../services/graph.service";
             <form class="navbar-form navbar-right form-inline" role="form">
               <div class="form-group">
                 <label class="sr-only" for="Email">User name</label>
-                <input type="text" class="form-control" id="Email1" placeholder="Email" autofocus required />
+                <input type="text" class="form-control" id="Email1" placeholder="Username or Email" autofocus required style="width: 206px !important"/>
               </div>
               <div class="form-group">
                 <label class="sr-only" for="Password">Password</label>
@@ -103,7 +101,6 @@ import { GraphService } from "../services/graph.service";
             <li class="upload" onclick="pushToRemote()"><a href="#">&nbsp;&nbsp;pull</a></li>
             <li class="download"onclick="pullFromRemote()"><a href="#">&nbsp;&nbsp;push</a></li>
             <li class="clean" onclick="cleanRepo()"><a href="#">&nbsp;&nbsp;clean</a></li>
-            <li class="sync" onclick="fetchFromOrigin()"><a href="#">&nbsp;&nbsp;sync</a></li>
           </ul>
         </div>
       </div>
