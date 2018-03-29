@@ -800,7 +800,6 @@ function cleanRepo() {
     displayModal("Please select a valid repository");
   });
 }
-<<<<<<< HEAD
 
 /**
  * This method is called when the sync button is pressed, and causes the fetch-modal 
@@ -837,5 +836,3 @@ function fetchFromOrigin() {
     displayModal("No Path Found.")
   }
 }
-=======
->>>>>>> upstream/master
