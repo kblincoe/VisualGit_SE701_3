@@ -28,7 +28,7 @@ import { Component } from "@angular/core";
           <div class="right">
             <input type="text" name="repositoryLocal" size="50" id="repoSave"/>
 
-            <button class="button-clone" (click)="addRepository()">Save</button>
+            <button class="button-clone" (click)="selectSave()">Save</button>
 			<input type="file" id="dirPickerSaveNew" name="dirListSave" (change)="addRepository();" style="display: none;" webkitdirectory />
           </div>
         </div>
