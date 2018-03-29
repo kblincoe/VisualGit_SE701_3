@@ -17,6 +17,7 @@ import { Component } from "@angular/core";
           </div>
           <div class="right">
           <input type="text" oninput="updateLocalPath()" name="repositoryRemote" size="50" id="repoClone" placeholder="https://github.com/user/repository.git"/>
+		  <button type="button" class="button-clone" id="cloneButton" onclick="selectSave()">Clone</button>
           </div>
         </div>
 
@@ -26,8 +27,9 @@ import { Component } from "@angular/core";
           </div>
           <div class="right">
             <input type="text" name="repositoryLocal" size="50" id="repoSave"/>
-            <button class="button-clone" (click)="selectSave()">Clone</button>
-            <input type="file" id="dirPickerSaveNew" name="dirListSave" (change)="addRepository();" style="display: none;" webkitdirectory />
+
+            <button class="button-clone" (click)="addRepository()">Save</button>
+			<input type="file" id="dirPickerSaveNew" name="dirListSave" (change)="addRepository();" style="display: none;" webkitdirectory />
           </div>
         </div>
 
