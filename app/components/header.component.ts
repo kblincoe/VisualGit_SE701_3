@@ -58,7 +58,7 @@ import { GraphService } from "../services/graph.service";
             <form class="navbar-form navbar-right form-inline" role="form">
               <div class="form-group">
                 <label class="sr-only" for="Email">User name</label>
-                <input type="text" class="form-control" id="Email1" placeholder="Email" autofocus required />
+                <input type="text" class="form-control" id="Email1" placeholder="Username or Email" autofocus required style="width: 206px !important"/>
               </div>
               <div class="form-group">
                 <label class="sr-only" for="Password">Password</label>
