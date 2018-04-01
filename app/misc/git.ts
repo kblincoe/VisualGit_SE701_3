@@ -800,3 +800,39 @@ function cleanRepo() {
     displayModal("Please select a valid repository");
   });
 }
+
+/**
+ * This method is called when the sync button is pressed, and causes the fetch-modal 
+ * to appear on the screen.
+ */
+function requestLinkModal() {
+  $("#fetch-modal").modal();
+}
+
+/**
+ * This method is called when a valid URL is given via the fetch-modal, and runs the 
+ * series of git commands which fetch and merge from an upstream repository.
+ */
+function fetchFromOrigin() {
+  console.log("begin fetching");
+  let upstreamRepoPath = document.getElementById("origin-path").value;
+  if (upstreamRepoPath != null) {
+    Git.Repository.open(repoFullPath)
+    .then(function(repo) {
+      console.log("fetch path valid")
+      displayModal("Beginning Synchronisation...");
+      addCommand("git remote add upstream " + upstreamRepoPath);
+      addCommand("git fetch upstream");
+      addCommand("git merge upstrean/master");
+      console.log("fetch successful")
+      updateModalText("Synchronisation Successful");
+      refreshAll(repo);
+    },
+    function(err) {
+      console.log("Waiting for repo to be initialised");
+      displayModal("Please select a valid repository");
+    });
+  } else {
+    displayModal("No Path Found.")
+  }
+}
