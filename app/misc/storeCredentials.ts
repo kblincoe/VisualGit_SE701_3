@@ -2,7 +2,8 @@ var CryptoJS = require("crypto-js");
 const os = require('os');
 var jsonfile = require('jsonfile');
 var fs = require('fs');
-
+var encryptedPassword;
+var encryptedUsername;
 
 
 function encrypt(username, password) {
@@ -10,12 +11,29 @@ function encrypt(username, password) {
     //OS.hostname() is the key.
     //AES encryption
        
-    var encryptedUsername = CryptoJS.AES.encrypt(username, os.hostname());
-    var encryptedPassword = CryptoJS.AES.encrypt(password, os.hostname());
+    encryptedUsername = CryptoJS.AES.encrypt(username, os.hostname());
+    encryptedPassword = CryptoJS.AES.encrypt(password, os.hostname());
 
 
     writetoJSON(encryptedUsername, encryptedPassword);
     
+}
+
+function encryptTemp(username, password) {
+  encryptedUsername = CryptoJS.AES.encrypt(username, os.hostname());
+  encryptedPassword = CryptoJS.AES.encrypt(password, os.hostname());  
+}
+
+function getUsernameTemp() {
+
+  var decryptedUsernameBytes = CryptoJS.AES.decrypt(encryptedUsername.toString(), os.hostname());
+  return decryptedUsernameBytes.toString(CryptoJS.enc.Utf8);;
+}
+
+function getPasswordTemp() {
+
+  var decryptedPasswordBytes = CryptoJS.AES.decrypt(encryptedPassword.toString(), os.hostname());
+  return decryptedPasswordBytes.toString(CryptoJS.enc.Utf8);
 }
 
 function writetoJSON(encryptedUsername, encryptedPassword) {

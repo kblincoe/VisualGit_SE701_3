@@ -71,8 +71,8 @@ function addAndCommit() {
   .then(function(parent) {
     console.log("7.0");
     let sign;
-    if (username !== null && password !== null) {
-      sign = Git.Signature.now(username, password);
+    if (getUsernameTemp() !== null && getPasswordTemp !== null) {
+      sign = Git.Signature.now(getUsernameTemp(), getPasswordTemp());
     } else {
       sign = Git.Signature.default(repository);
     }

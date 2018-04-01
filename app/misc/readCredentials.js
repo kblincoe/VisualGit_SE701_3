@@ -3,21 +3,19 @@ var os = require('os');
 var jsonfile = require('jsonfile');
 var fs = require('fs');
 var file;
-var decryptedPasswordPlain = "";
-var decryptedUsernamePlain = "";
+var encryptedPassword;
+var encryptedUsername;
 function decrypt() {
     file = 'data.json';
     var objRead = jsonfile.readFileSync(file);
-    var encryptedUsername = objRead.username;
-    var encryptedPassword = objRead.password;
-    var decryptedUsernameBytes = CryptoJS.AES.decrypt(encryptedUsername.toString(), os.hostname());
-    decryptedUsernamePlain = decryptedUsernameBytes.toString(CryptoJS.enc.Utf8);
-    var decryptedPasswordBytes = CryptoJS.AES.decrypt(encryptedPassword.toString(), os.hostname());
-    decryptedPasswordPlain = decryptedPasswordBytes.toString(CryptoJS.enc.Utf8);
+    encryptedUsername = objRead.username;
+    encryptedPassword = objRead.password;
 }
 function getUsername() {
-    return decryptedUsernamePlain;
+    var decryptedUsernameBytes = CryptoJS.AES.decrypt(encryptedUsername.toString(), os.hostname());
+    return decryptedUsernameBytes.toString(CryptoJS.enc.Utf8);
 }
 function getPassword() {
-    return decryptedPasswordPlain;
+    var decryptedPasswordBytes = CryptoJS.AES.decrypt(encryptedPassword.toString(), os.hostname());
+    return decryptedPasswordBytes.toString(CryptoJS.enc.Utf8);
 }
