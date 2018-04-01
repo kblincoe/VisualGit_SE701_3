@@ -7,6 +7,7 @@ let branchCommit = [];
 let remoteName = {};
 let localBranches = [];
 let readFile = require("fs-sync");
+let checkFile = require("fs");
 let repoCurrentBranch = "master";
 let modal;
 let span;
@@ -72,7 +73,12 @@ function openRepository() {
     document.getElementById("repoOpen").text = fullLocalPath;
   } else {
     let localPath = document.getElementById("repoOpen").value;
-    let fullLocalPath = require("path").join(__dirname, localPath);
+    let fullLocalPath;
+    if (checkFile.existsSync(localPath)) {
+      fullLocalPath = localPath;
+    } else {
+      fullLocalPath = require("path").join(__dirname, localPath);
+    }
   }
 
   console.log("Trying to open repository at " + fullLocalPath);
