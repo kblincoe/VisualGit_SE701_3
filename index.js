@@ -123,6 +123,10 @@ function setMyMenu() {
 				label: 'Report Bugs or Request new Features',
 				click () { require('electron').shell.openExternal('https://github.com/kblincoe/VisualGit_SE701/issues'); }
 			},
+			{
+				label: 'Offline Support',
+				click () { require('electron').shell.openItem(__dirname + '/README.pdf');   }
+			},
 			{type: 'separator'},
 			{
 				label: 'Learn More ... ',
