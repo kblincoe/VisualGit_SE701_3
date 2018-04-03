@@ -21,7 +21,6 @@ function downloadRepository() {
         fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
     }
     var cloneURL = document.getElementById("repoClone").value;
-
     if (!cloneURL || cloneURL.length === 0) {
         updateModalText("Clone Failed - Empty URL Given");
     }
@@ -47,6 +46,7 @@ function downloadFunc(cloneURL, fullLocalPath) {
     var repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
         .then(function (repository) {
         console.log("Repo successfully cloned");
+        refreshAll(repository);
         updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
         addCommand("git clone " + cloneURL + " " + localPath);
         repoFullPath = fullLocalPath;

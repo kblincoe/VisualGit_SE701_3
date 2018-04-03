@@ -52,6 +52,7 @@ function downloadFunc(cloneURL, fullLocalPath) {
   let repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
   .then(function(repository) {
     console.log("Repo successfully cloned");
+    refreshAll(repository);
     updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
     addCommand("git clone " + cloneURL + " " + fullLocalPath);
     repoFullPath = fullLocalPath;
