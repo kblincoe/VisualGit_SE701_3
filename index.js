@@ -19,15 +19,16 @@ function onClosed() {
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
-		backgroundColor : "#000"
+		backgroundColor : "#000",
+		icon: __dirname + '/assets/VisualGit_Logo.png'
 	});
 
+	
 	win.maximize();
 
 	win.setTitle(require('./package.json').name);
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.on('closed', onClosed);
-
 	return win;
 }
 
