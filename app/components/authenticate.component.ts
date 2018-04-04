@@ -27,7 +27,7 @@ import { Component } from "@angular/core";
     </label>
     <br><br>
     <div class="input-group" style="width:280px;">
-      <input id="username" type="text" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+      <input id="username" type="text" class="form-control" placeholder="Username or Email" aria-describedby="basic-addon1">
     </div>
     <br>
 
@@ -52,6 +52,9 @@ import { Component } from "@angular/core";
     <button style="width:280px;" class="btn btn-link" (click)="openGitHubPasswordResetPage()">Forgot your password?</button>
     
     <br>
+
+    <button style="width:280px;" class="btn btn-link" (click)="createNewAccount()">Create New Account?</button>
+
     <br>
     <button type="submit" style="width:280px;" class="btn btn-primary" onclick="switchToAddRepositoryPanel()">Continue without sign in</button>
   </form>
@@ -63,4 +66,9 @@ export class AuthenticateComponent {
   switchToMainPanel(): void {
     signInPage(switchToAddRepositoryPanel);
   }
+
+  createNewAccount(): void {
+    window.open("https://github.com/join?", "_blank");
+  }
+
 }

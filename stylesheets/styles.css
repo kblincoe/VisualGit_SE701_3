@@ -3,6 +3,10 @@ p, h1 {
   font-family: 'Montserrat', sans-serif;
 }
 
+ul{
+  list-style-type: none;
+}
+
 .btn:focus {
   outline: 0;
 }
@@ -382,6 +386,11 @@ body .add-repository-panel .right {
 
 body .add-repository-panel .right .button {
   height: 100%;
+}
+
+body .navbar .fa-clone {
+  padding-left: 25px;
+  margin-top: 8px;
 }
 
 body .footer {

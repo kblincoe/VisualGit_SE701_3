@@ -6,6 +6,14 @@ function collpaseSignPanel() {
   $('#nav-collapse1').collapse('hide');
 }
 
+function switchToClonePanel(){
+  console.log("switch to clone panel");
+  hideAuthenticatePanel();
+  hideFilePanel();
+  hideGraphPanel();
+  displayClonePanel();
+}
+
 function switchToMainPanel() {
   hideAuthenticatePanel();
   hideAddRepositoryPanel();
@@ -29,6 +37,11 @@ function wait(ms){
   }
 }
 
+function displayClonePanel(){
+  document.getElementById("add-repository-panel").style.zIndex = "10";
+  $("#open-local-repository").hide();
+}
+
 function displayFilePanel() {
   document.getElementById("file-panel").style.zIndex = "10";
 }
@@ -39,6 +52,7 @@ function displayGraphPanel() {
 
 function displayAddRepositoryPanel() {
   document.getElementById("add-repository-panel").style.zIndex = "10";
+  $("#open-local-repository").show();
 }
 
 function hideFilePanel() {

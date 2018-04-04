@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var vis = require("vis");
 var github1 = require("octonode");
 var nodeId = 1;
@@ -341,14 +342,14 @@ function makeAbsNode(c, column) {
                 abstractList[i]['count'] += 1;
                 count = abstractList[i]['count'];
                 abstractList[i]['sha'].push(c.toString());
-                abNodes.update({ id: i + 1, title: "Author: " + email + "<br>" + "Number of Commits: " + count });
+                abNodes.update({ id: i + 1, title: "Author: " + getUsernameTemp() + "<br>" + "Number of Commits: " + count });
                 break;
             }
         }
     }
     if (flag) {
         var id = absNodeId++;
-        var title = "Author: " + email + "<br>" + "Number of Commits: " + count;
+        var title = "Author: " + getUsernameTemp() + "<br>" + "Number of Commits: " + count;
         abNodes.add({
             id: id,
             shape: "circularImage",
@@ -391,7 +392,7 @@ function makeAbsNode(c, column) {
             id: id,
             time: c.timeMs(),
             column: column,
-            email: email,
+            email: getUsernameTemp(),
             reference: reference,
             parents: c.parents(),
             count: 1,
@@ -404,7 +405,7 @@ function makeNode(c, column) {
     var name = getName(c.author().toString());
     var stringer = c.author().toString().replace(/</, "%").replace(/>/, "%");
     var email = stringer.split("%")[1];
-    var title = "Author: " + email + "<br>" + "Message: " + c.message();
+    var title = "Author: " + getUsernameTemp() + "<br>" + "Message: " + c.message();
     var flag = false;
     nodes.add({
         id: id,
@@ -447,7 +448,7 @@ function makeNode(c, column) {
         id: id,
         time: c.timeMs(),
         column: column,
-        email: email,
+        email: getUsernameTemp(),
         reference: reference,
         branch: flag,
     });

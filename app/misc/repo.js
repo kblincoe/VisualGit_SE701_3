@@ -7,6 +7,7 @@ var branchCommit = [];
 var remoteName = {};
 var localBranches = [];
 var readFile = require("fs-sync");
+var checkFile = require("fs");
 var repoCurrentBranch = "master";
 var modal;
 var span;
@@ -20,7 +21,6 @@ function downloadRepository() {
         fullLocalPath = document.getElementById("dirPickerSaveNew").files[0].path;
     }
     var cloneURL = document.getElementById("repoClone").value;
-
     if (!cloneURL || cloneURL.length === 0) {
         updateModalText("Clone Failed - Empty URL Given");
     }
@@ -46,6 +46,7 @@ function downloadFunc(cloneURL, fullLocalPath) {
     var repository = Git.Clone.clone(cloneURL, fullLocalPath, options)
         .then(function (repository) {
         console.log("Repo successfully cloned");
+        refreshAll(repository);
         updateModalText("Clone Successful, repository saved under: " + fullLocalPath);
         addCommand("git clone " + cloneURL + " " + localPath);
         repoFullPath = fullLocalPath;
@@ -65,8 +66,16 @@ function openRepository() {
     }
     else {
         var localPath = document.getElementById("repoOpen").value;
-        var fullLocalPath = require("path").join(__dirname, localPath);
+        var fullLocalPath;
+        if (checkFile.existsSync(localPath)) {
+            console.log(localPath + " exists");
+            fullLocalPath = localPath;
+        } else {
+            console.log(localPath + " does not exist");
+            fullLocalPath = require("path").join(__dirname, localPath);
+        }
     }
+    
     console.log("Trying to open repository at " + fullLocalPath);
     displayModal("Opening Local Repository...");
     Git.Repository.open(fullLocalPath).then(function (repository) {

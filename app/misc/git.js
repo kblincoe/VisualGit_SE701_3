@@ -1,5 +1,5 @@
 "use strict";
-//Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", { value: true });
 var opn = require('opn');
 var $ = require("jquery");
 var Git = require("nodegit");
@@ -62,8 +62,8 @@ function addAndCommit() {
         .then(function (parent) {
         console.log("7.0");
         var sign;
-        if (username !== null && password !== null) {
-            sign = Git.Signature.now(username, password);
+        if (getUsernameTemp() !== null && getPasswordTemp !== null) {
+            sign = Git.Signature.now(getUsernameTemp(), getPasswordTemp());
         }
         else {
             sign = Git.Signature.default(repository);
@@ -100,7 +100,7 @@ function addAndCommit() {
             displayModal(err.message);
         }
         else {
-            updateModalText("Oops, error occurs! If you haven't logged in, please login and try again.");
+            updateModalText("Oops, error occours! If u haven't login, please login and try again.");
         }
     });
 }
